@@ -1,6 +1,7 @@
 <?php
 
 include_once "inc/testinput.php";
+include_once 'helpers/formatString.php';
 include_once "inc/Security.php";
 /**
  * Handles user interactions within the app
@@ -21,6 +22,7 @@ class ToolUsers
      * @var object
      */
     private $_db;
+	private $min_password_length =8;
 
     /**
      * initialize new ToolUsers instance
@@ -34,8 +36,8 @@ class ToolUsers
         else
         {
 			include_once 'inc/constants.inc.php';
-            $connection = mysql_connect($dbhost, $dbuser, $dbpass);
-			mysql_select_db($db);
+            $connection = mysql_connect(dbhost, dbuser, dbpass);
+			mysql_select_db(db);
         }
     }
 	
@@ -82,13 +84,12 @@ class ToolUsers
 		//====================================================
 		//       check validation for "password" input
 		//====================================================
-		   
 			if (empty($_POST["password"])) {
 				$data_correct = 0;
 				$passwordErr = "password is required";
 			} else {
 				$password = test_input($_POST["password"]);
-				if ($password != 'unix11' && strlen($password) < $min_password_length) {
+				if (($password != 'unix11') && (strlen($password) < $this->min_password_length)) {
 					$passwordErr = 'invalid password! Default password is \'unix11\'.<br />'.
 									'Other passwords must be at least 8 characters.';
 				}
@@ -141,25 +142,28 @@ class ToolUsers
 		//       inserting valid data to database.
 		//====================================================
 			if ($data_correct == 1){
-				$query = "SELECT count(*) As theCount From `users` WHERE UserName LIKE '$userName' AND Expired IS NULL";
-				//$query = "SELECT * From `users` WHERE UserName LIKE '$userName'";
+				$query = "SELECT count(*) As theCount From `users` WHERE '__users_tl_user_name' LIKE '$userName' AND '__users_tl_expired' IS NULL";
+				echo 'select * query: '.$userName;
+				//$query = "SELECT * From `users` WHERE '__users_tl_user_name' LIKE '$userName'";
 				$result = mysql_query($query);
 				/* while ($user = mysql_fetch_array($result)){
 						echo 'in while loop';
-						echo "<h3>" . $user['Role'] . "</h3>";
+						echo "<h3>" . $user['role'] . "</h3>";
 				}
 				echo 'after while loop';
 				exit(); */
 				$is_user_exist = mysql_query($query) or die(mysql_error());
 				$result =  mysql_result($is_user_exist, 0) ;
+				echo 'result: '.$result;
 				if (! ($result == 0)){
 					unset($_POST['userName']);
 					echo "<script type=\"text/javascript\"> alert(\"The given user name is occupied. Please try another user name.\"); </script>'";
 					//header('Location: addnewuser.php');
 				} else {
 							// realName, userName, password, mail, phone, role
-					$insertQuery = "INSERT INTO users (`RealName`,`UserName`,`Password`,`AmdocsMail`,`Phone`,`Role`,`Account`)
-						VALUES('$realName','$userName','$password','$mail','$phone','$role','$account')";
+					$columns = __users_tl_real_name.','.__users_tl_user_name.','.__users_tl_password.','.__users_tl_amdocs_mail.','.
+						__users_tl_phone.','.__users_tl_role.','.__users_tl_account;
+					$insertQuery = "INSERT INTO users ($columns) VALUES('$realName','$userName','$password','$mail','$phone','$role','$account')";
 					$insertResult = mysql_query($insertQuery) or die(mysql_error());
 					
 					if(mysql_errno()){
@@ -186,25 +190,35 @@ class ToolUsers
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 			$option_selected = test_input($_POST["usersData"]);
-			preg_match('/UserName:.*/', $option_selected, $matches);
-			$user_name = trim(substr($matches[0], 10), ',');
-			echo 'about to remove user '.$user_name.'.......<br />';
+			echo '/'.niceValue(__users_tl_user_name).':.*/<br>';
+			preg_match('/'.niceValue(__users_tl_user_name).':.*/', $option_selected, $matches);
+			echo $matches[0];
+			$userName = trim(substr($matches[0], 10), ',');
+			echo '<br><br> user name: '.$userName.'<br>';
 			
 			$date = date("Y-m-d");
-			$removeQuery = "UPDATE users SET Expired='$date' WHERE `UserName`='$user_name'";
-			$removeQuery = mysql_query($removeQuery) or die(mysql_error());
 			
+			$removeQuery = 'UPDATE users SET `'.__users_tl_user_name." = 'EXP_".$userName."', ".__users_tl_expired."` = '".$date."' WHERE `".__users_tl_user_name."` = '".trim($userName, ' ')."'";
+							//UPDATE `users` SET `user_name` = 'EXP_ca', `expired` = '2015-12-04' WHERE `users`.`user_name` = 'ca'
+			//', '.__users_tl_user_name.'='.$expUserName.
+			echo '<br><br>'.$removeQuery.'<br>';
+			$removeQuery_res = mysql_query($removeQuery) or die(mysql_error());
+			//_______$removeQuery_res = mysql_query($removeQuery"UPDATE users SET `expired` = 2015/12/04 WHERE `user_name` = ' nce093'") or die(mysql_error());
+			if ($removeQuery_res == FALSE) {echo '<br><h3>FALSE </h3><br>'; } else {
 			if(mysql_errno()){
 				echo "MySQL error ".mysql_errno().": "
 				.mysql_error()."\n<br>When executing <br>\n$removeQuery\n<br>";
 			}
 			else {
 				// if insert succeeded
-				echo "<script type=\"text/javascript\"> alert(\"User $user_name was removed successfully!\"); </script>";
+				echo "<script type=\"text/javascript\"> alert(\"User $userName was removed successfully!\"); </script>";
 			}
-			
+			}
 		}
 	}
+	/**
+     * Perform user long in to system.
+     */
 	public function UserLogIn(){
 		global $userNameErr, $passwordErr;
 		
@@ -223,8 +237,9 @@ class ToolUsers
 			//====================================================
 			//       check user with "userName" exists in database
 			//====================================================
-			$selectQuery = "SELECT UserName,Password,Role FROM users WHERE UserName LIKE '$userName'";
-			$selectResult = mysql_query($insertQuery) or die(mysql_error());
+			$selectQuery = "SELECT '__users_tl_real_name','__users_tl_user_name','__users_tl_password',
+				'__users_tl_role' FROM users WHERE '__users_tl_user_name' LIKE '$userName'";
+			$selectResult = mysql_query($selectQuery) or die(mysql_error());
 			$num_rows = mysql_num_rows($selectResult);
 			
 			if (! ($num_rows == 1)){
@@ -234,9 +249,9 @@ class ToolUsers
 			}
 			else {	// get user information from database (Password, Role)
 				$userInfo = mysql_fetch_array($selectResult);
-				$userPassword = $userInfo['Password'];
-				$userRole = $userInfo['Role'];
-				$userRealName = $userInfo['RealName'];
+				$userPassword = $userInfo['password'];
+				$userRole = $userInfo['role'];
+				$userRealName = $userInfo['real_name'];
 			}
 			//====================================================
 			//       check validation for "password" input
@@ -254,7 +269,8 @@ class ToolUsers
 			}
 			if ($data_correct == 1){ // user name & user password are legal and in database
 				// save user info in session
-				$_Session['UserName'] = $userInfo['UserName'];
+				$_SESSION['LoggedIn'] = 1;
+				$_Session['UserName'] = $userInfo[__users_tl_user_name];
 				$_Session['Password'] = $userPassword;
 				$_Session['Role'] = $userRole;
 				

@@ -1,7 +1,5 @@
 <?php
 	include_once 'common/base.php';
-    
-	    $min_password_length =8;
 		
 	function test_input($data) {
 	   $data = trim($data);

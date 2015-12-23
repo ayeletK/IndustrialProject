@@ -1,60 +1,64 @@
 <?php
-    include_once "common/base.php";
-    $pageTitle = "Home";
-    //include_once "common/header.php";
-
-    if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username'])):
+	include_once 'common/base.php';
+	
+	if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == 1){
+	}
+	// define variables and set to empty values
+	$userNameErr = $passwordErr = "";
+	
+	if(!empty($_POST['userName']) && !empty($_POST['password'])) {
+ 		include_once "inc/class.users.inc.php";
+		$users = new ToolUsers($db);
+		echo $users->UserLogIn();
+	}
 ?>
 
-        <p>You are currently <strong>logged in.</strong></p>
-        <p><a href="/logout.php">Log out</a></p>
-<?php
-    elseif(!empty($_POST['username']) && !empty($_POST['password'])):
-        include_once 'inc/class.users.inc.php';
-        $users = new ToolUsers($db);
-        if($users->accountLogin()===TRUE):
-            echo "<meta http-equiv='refresh' content='0;/'>";
-            exit;
-        else:
-?>
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Production Schedule Tool</title>
+    
+    
+        <link rel="stylesheet" href="login_addition/css/style.css">	
+    
+    
+  </head>
 
-        <h2>Login Failed&mdash;Try Again?</h2>
-        <form method="post" action="login.php" name="loginform" id="loginform">
-            <div>
-                <input type="text" name="username" id="username" />
-                <label for="username">Email</label>
-                <br /><br />
-                <input type="password" name="password" id="password" />
-                <label for="password">Password</label>
-                <br /><br />
-                <input type="submit" name="login" id="login" value="Login" class="button" />
-            </div>
-        </form>
-        <p><a href="/password.php">Did you forget your password?</a></p>
-<?php
-        endif;
-    else:
-?>
+  <body>
 
-        <h2>Your list awaits...</h2>
-        <form method="post" action="login.php" name="loginform" id="loginform">
-            <div>
-                <input type="text" name="username" id="username" />
-                <label for="username">Email</label>
-                <br /><br />
-                <input type="password" name="password" id="password" />
-                <label for="password">Password</label>
-                <br /><br />
-                <input type="submit" name="login" id="login" value="Login" class="button" />
-            </div>
-        </form><br /><br />
-        <p><a href="/password.php">Did you forget your password?</a></p>
-<?php
-    endif;
-?>
+    <div class="wrapper">
+	<div class="container">
+		<h1>Welcome to Production Schedule Tool</h1>
+		<br />
+		<form method="post" action="login.php">
+			<input type="text" placeholder="User Name" name="userName" id="userName" required>
+			<span class="error"> <?php echo $userNameErr;?></span>
+			<input type="password" placeholder="Password" name="password" id="password" required>
+			<span class="error"><?php echo $passwordErr;?></span>
+			<input type="submit" name="login-button" id="login-button" value="Login" onclick="return confirm('submit was clicked?');" />
+		</form>
+	</div>
+	
+	<ul class="bg-bubbles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+ <!--   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>	-->
 
-        <div style="clear: both;"></div>
-<?php
-    //include_once "common/ads.php";
-    //include_once "common/close.php";
-?>
+        <script src="login_addition/js/index.js"></script>
+
+    
+    
+    
+  </body>
+</html>

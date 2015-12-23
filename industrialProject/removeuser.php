@@ -6,6 +6,7 @@
             padding-top: 40px;
             padding-bottom: 40px;
             background-color: #F3FFE3;
+			text-align: .center;
          }
          
          .form-remove {
@@ -68,7 +69,6 @@
 <?php
     
     include_once "common/base.php";
-	
     // define variables and set to empty values
 	 $clusterErr="";
 	 $cluster_name="";
@@ -78,7 +78,7 @@
     
     if(!empty($_POST['usersData'])) {
 		include_once "inc/class.users.inc.php";
-		$users = new ToolUsers($db);
+		$users = new ToolUsers(db);
 		echo $users->RemoveUser();
 	}
 ?>
@@ -111,7 +111,7 @@
 			<td>
 				<?php 
 					include_once 'helpers/getDropDownListFromTableData.php';
-					$columns = array('RealName','UserName');
+					$columns = array(__users_tl_real_name,__users_tl_user_name);
 					echo getColumnsFromTable('users',$columns, 10);
 				?>
 			</td>
@@ -121,6 +121,19 @@
 		</tr>
 	</table>
 </form>
+
+<!-- option for representation. -->
+<?php /*$sql = "SELECT * FROM users";
+                            $res = mysql_query($sql);
+                            if (mysql_num_rows($res)) {
+                            //$query = mysql_query("SELECT * FROM users ORDER BY real_name");
+                            $i=1;
+                            while($row =  mysql_fetch_array($res)){
+                            ?>
+
+<input type="checkbox" name="checkboxstatus[<?php echo $i; ?>]" value="<?php echo $row['real_name']; ?>" /><?php echo $row['real_name']; ?></option>
+
+<?php $i++; }}*/ ?>
 
 </body>
 </html>
