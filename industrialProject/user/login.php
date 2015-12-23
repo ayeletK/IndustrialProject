@@ -24,14 +24,13 @@
     
     
         <link rel="stylesheet" href="../login_addition/css/style.css">	
-    
-    
   </head>
 
   <body>
-
+	
     <div class="wrapper">
 		<div class="container">
+			
 			<h1>Welcome to Production Schedule Tool</h1>
 			<br />
 			<form method="post" action="login.php">
@@ -41,7 +40,7 @@
 				<span class="error"><?php echo $passwordErr;?></span>
 				<input type="submit" name="login-button" id="login-button" value="Login" />
 			</form>
-<!--			<a href="resetpassword.php"> Forgot your password? </a>			-->
+			<a id="resetPass" href="resetpassword.php"> Forgot your password? </a>
 		</div>
 		<ul class="bg-bubbles">
 			<li></li>

@@ -1,5 +1,5 @@
 <?php
-	include_once 'common/base.php';
+	include_once '../common/base.php';
 		
 	function test_input($data) {
 	   $data = trim($data);

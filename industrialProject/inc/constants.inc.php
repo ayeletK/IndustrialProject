@@ -9,6 +9,7 @@
 	//TODO: add tables names constants
 	
 	// Users table fields credentials
+	define("__users_tl_user_id", "user_id");
 	define("__users_tl_real_name", "real_name");
 	define("__users_tl_user_name", "user_name");
 	define("__users_tl_password", "password");
@@ -16,6 +17,10 @@
 	define("__users_tl_phone", "phone");
 	define("__users_tl_role", "role");
 	define("__users_tl_account", "account");
+	define("__users_tl_date_modified", "date_modified");
+	define("__users_tl_modifying_user", "modifying_user");
+	define("__users_tl_date_created", "date_created");
+	define("__users_tl_creating_user", "creating_user");
 	define("__users_tl_expired", "expired");
 	
 	//cluster table fields credentials

@@ -61,11 +61,10 @@ class ToolUsers
 			} else {
 			//add check that user exist in database
 				$realName = test_input($_POST["realName"]);
-				if (!preg_match("/^[A-Z]{1,}[a-zA-Z]*[ ][A-Z]{1,}[a-zA-Z]*[a-zA-Z ]*$/",$realName)) {
+				if (!preg_match("/^[A-Z][a-zA-Z]*\s([A-Z][a-zA-Z ]*)+$/",$realName)) {
 					$realNameErr = 'invalud name. You must enter full name (first + last).<br />'.
 								'All names must start with Capital Letter';
 					$data_correct = 0;
-					
 				}
 			}
 		//====================================================
@@ -92,6 +91,7 @@ class ToolUsers
 				if (($password != 'unix11') && (strlen($password) < $this->min_password_length)) {
 					$passwordErr = 'invalid password! Default password is \'unix11\'.<br />'.
 									'Other passwords must be at least 8 characters.';
+					$data_correct = 0;
 				}
 				else { // hash password for secure storage
 					/* $hashed_password = Security.HashSHA1($password);
@@ -122,8 +122,8 @@ class ToolUsers
 		
 			if (!empty($_POST["phone"])){
 				$phone = test_input($_POST["phone"]);
-				$phone = preg_replace("/[^0-9]/","",$phone);
-				if (!preg_match("/^0(([57]\d){8}|[23489][2-9]\d{6}$/",$phone)) {	// make a better check, allow [- +] characters
+				// $phone = preg_replace("/[^0-9]/","",$phone);
+				if (!preg_match("/^0((([57]\d)[\-]\d{7})|([23489][\-][2-9]\d{6}))$/",$phone)) {	// make a better check, allow [- +] characters
 					$phoneErr = 'invalid phone number!<br /> Phone number must be 9-10 digits.';
 					$data_correct = 0;
 				}
@@ -145,7 +145,7 @@ class ToolUsers
 			if ($data_correct == 1){
 				$query = "SELECT count(*) As theCount From `users` WHERE '__users_tl_user_name'='$userName' AND '__users_tl_expired' IS NULL";
 				//$query = "SELECT * From `users` WHERE '__users_tl_user_name' LIKE '$userName'";
-				$result = mysql_query($query);
+				//$result = mysql_query($query);
 				/* while ($user = mysql_fetch_array($result)){
 						echo 'in while loop';
 						echo "<h3>" . $user['role'] . "</h3>";
@@ -153,15 +153,23 @@ class ToolUsers
 				echo 'after while loop';
 				exit(); */
 				$is_user_exist = mysql_query($query) or die(mysql_error());
-				$result =  mysql_result($is_user_exist, 0) ;
-				if (! ($result == 0)){
+				$rows =  mysql_num_rows($is_user_exist);
+				if ($rows > 0){
 					unset($_POST['userName']);
 					echo "<script type=\"text/javascript\"> alert(\"The given user name is occupied. Please try another user name.\"); </script>'";
 					//header('Location: cssmenu/mainPage.php');
 				} else {
 					$columns = __users_tl_real_name.','.__users_tl_user_name.','.__users_tl_password.','.__users_tl_amdocs_mail.','.
-						__users_tl_phone.','.__users_tl_role.','.__users_tl_account;
-					$insertQuery = "INSERT INTO users ($columns) VALUES('$realName','$userName','$password','$mail','$phone','$role','$account')";
+						__users_tl_phone.','.__users_tl_role.','.__users_tl_account.','.__users_tl_date_modified.','.__users_tl_modifying_user.','.
+						__users_tl_date_created.','.__users_tl_creating_user;
+					$modifierName = $_SESSION['UserName'];
+					$modifierQuery = "SELECT ".__users_tl_user_id." FROM users WHERE ".__users_tl_user_name."='".$modifierName."'
+										AND ".__users_tl_expired." IS NULL";
+					$modifierResult = mysql_query($modifierQuery) or die(mysql_error());
+					$modifierId = mysql_result($modifierResult, 0);
+					$date = date("Y-m-d");
+					$insertQuery = "INSERT INTO users ($columns) VALUES('$realName','$userName','$password','$mail','$phone','$role','$account',
+									'$date','$modifierId','$date','$modifierId')";
 					$insertResult = mysql_query($insertQuery) or die(mysql_error());
 					
 					if(mysql_errno()){
@@ -170,8 +178,9 @@ class ToolUsers
 					}
 					else {
 						// if insert succeeded
+						return true;
 						echo "<script type=\"text/javascript\"> alert(\"User was added successfully!\"); </script>";
-						header('Location: ../cssmenu/mainPage.php');
+						//header('Location: ../cssmenu/mainPage.php');
 					}
 				}
 			}

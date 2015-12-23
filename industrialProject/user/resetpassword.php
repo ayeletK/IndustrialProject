@@ -1,5 +1,5 @@
 <?php
-    include_once "common/base.php";
+    include_once "../common/base.php";
 
 /*     if(isset($_GET['v']) && isset($_GET['e']))
     {
