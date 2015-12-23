@@ -39,11 +39,12 @@
 	// Tasks table fields credentials
 	define("__tasks_tl_task_id", "task_id");
 	define("__tasks_tl_task_name", "task_name");
-	define("__tasks_tl_start_time", "start_time");
-	define("__tasks_tl_end_date", "end_date");
-	define("__tasks_tl_end_time", "end_time");
-	define("__tasks_tl_account_id", "account_id");
-	define("__tasks_tl_manager", "manager");
+	define("__tasks_tl_severity", "severity");
+	define("__tasks_tl_duration", "duration");
+	define("__tasks_tl_days", "days");
+	define("__tasks_tl_role", "role");
+	define("__tasks_tl_frequency", "frequency");
+	define("__tasks_tl_account", "account");
 	define("__tasks_tl_expired", "expired");
 	
     // Attachment table fields credentials

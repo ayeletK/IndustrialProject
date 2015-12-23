@@ -2,10 +2,19 @@
 <?php
     
     include_once "../common/base.php";
+	// define variables and set to empty values
+	$taskNameErr = $taskIdErr = $durationErr = $roleErr = "";
 	
-// echo "hi";
-    if(!empty($_POST['task_name']) && !empty($_POST['task_id']) && isset($_FILES['attachment']) && !empty($_POST['role']) && !empty($_POST['account_name']) && !empty($_POST['duration']) && !empty($_POST['severity'])){  //!empty($_POST['instruction']) && !empty($_POST['frequency']) && !empty($_POST['attachment']) && !empty($_POST['role']) && !empty($_POST['account']) && !empty($_POST['task_description']) && !empty($_POST['duration']) && !!empty($_POST['days']) && !empty($_POST['schedule_id'])) {
-  //      echo "1";
+	// regEx for client side validation check
+	$taskNameRegEx = '/^[A-Za-z](\d)+$/';
+    $durationRegEx = '(\d){1:3}';
+    $taskIdRegEx = '/^[A-Za-z](\d)+$/';
+    
+    
+	
+echo "hi";
+    if(!empty($_POST['task_name']) && !empty($_POST['task_id']) && isset($_FILES['attachment'])  && !empty($_POST['Days']) && !empty($_POST['role']) && !empty($_POST['account_name']) && !empty($_POST['duration']) && !empty($_POST['severity'])){  //!empty($_POST['instruction']) && !empty($_POST['frequency']) && !empty($_POST['attachment']) && !empty($_POST['role']) && !empty($_POST['account']) && !empty($_POST['task_description']) && !empty($_POST['duration']) && !!empty($_POST['days']) && !empty($_POST['schedule_id'])) {
+       echo "1";
         include_once "../inc/class.tasks.inc.php";
             $task_group = new TasksTool(db);
             //echo "oooo";
@@ -42,7 +51,7 @@
           <div class='form-group'>
             <label class='col-md-2 ' for='task_name'>Task name:</label>
             <div class='col-md-2' >
-                <input class="form-control" type="text" name="task_name" id="task_name" size="25" maxlength="30" width="7%" required />
+                <input class="form-control" type="text" name="task_name" id="task_name" size="25" maxlength="30" width="7%" onblur="return validate_input(id, <?php echo $taskNameRegEx; ?>, 'taskNameErr');" required />
             </div>					
             <div class='col-md-1' >
             <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Task name include only Letters or digits">        
@@ -53,9 +62,10 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
 </script>
+</script>
             <label class='control-label col-md-2' for='task_id'>Task id:</label>
             <div class='col-md-2' >
-                <input class="form-control" type="text" name="task_id" id="task_id" size="25" maxlength="30" width="7%" required />
+                <input class="form-control" type="text" name="task_id" id="task_id" size="25" maxlength="30" width="7%" onblur="return validate_input(id, <?php echo $taskIdRegEx; ?>, 'taskIdErr');" required />
             </div>
             <div class='col-md-1' >
             <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Task id include only Letters or digits">        
@@ -77,18 +87,31 @@ $(document).ready(function(){
             <label class='control-label col-md-1' for='duration'>Duration</label>
             <div class='col-md-3'>
               <div class='form-group'>
-                
                 <div class='col-md-3'>
-                  <input class='form-control' name='duration' id='duration' placeholder='' type='text' maxlength='30'>
+                  <input class='form-control' name='duration' id='duration' placeholder='' type='text' maxlength='30' onblur="return validate_input(id, <?php echo $durationRegEx; ?>, 'taskNameErr');>
                 </div>
               <div class='col-md-1' >
-            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="In minutes- time the task should be completed">        
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="(In hours)- time the task should be completed">        
             </div>
             <div class="error" id="durationErr"></div>
             </div>
           </div>   
           </div>   
-
+          <div class='form-group'>
+            <label class='control-label col-md-1' for='Days'>Days</label>
+            <div class='col-md-10'>
+             <input type="checkbox" name="Days[]" value="Sunday"/> Sunday
+             <input type="checkbox" name="Days[]" value="Monday" checked/> Monday
+             <input type="checkbox" name="Days[]" value="Tuesday" /> Tuesday
+             <input type="checkbox" name="Days[]" value="Wednesday" /> Wednesday
+             <input type="checkbox" name="Days[]" value="Thursday" /> Thursday
+             <input type="checkbox" name="Days[]" value="Friday" /> Friday
+             <input type="checkbox" name="Days[]" value="Saturday" /> Saturday
+            </div>
+            <div class='col-md-1' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">        
+            </div>  
+          </div> 
           <div class='form-group'>
               <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account:</label>
               <div class='col-md-8'>
@@ -120,16 +143,16 @@ $(document).ready(function(){
             <label class='control-label col-md-2 col-md-offset-2' for='task_id'>attachment:</label>
             <div class='col-md-2' >
             <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-            <input name="attachment" type="file" id="attachment"> 
+            <input name="attachment" type="file" id="attachment" required> 
             </div>
             </div> 
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='severity'>Task Severity</label>
             <div class='col-md-8'>
               <select class='multiselect' id='severity' name='severity' multiple='multiple'>
-                <option value='Critical'>Critical</option>
-                <option value='High'>High</option>
-                <option value='Low'>Low</option>
+                <option value="Critical" selected="selected" >Critical</option>
+                <option value="High">High</option>
+                <option value="Low">Low</option>
               </select>
             </div>
           </div>  
@@ -173,6 +196,7 @@ $(document).ready(function(){
       </div>
     </div>
   </div>
+<script src="../scripts/formDataValidation.js"></script>
   <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js' type='text/javascript'></script>
   <script src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/js/bootstrap.min.js' type='text/javascript'></script>
   <script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js' type='text/javascript'></script>
@@ -181,5 +205,6 @@ $(document).ready(function(){
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
   </body>
-<!--<script src="addnewcluster.js"></script>-->
+

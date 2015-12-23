@@ -119,11 +119,13 @@ class TasksTool
             //====================================================   
 
             if (empty($_POST["role"])) {
-                echo "role\n";
+                //echo "role\n";
                 $data_correct = 0;
             } else {
                 $role = test_input($_POST["role"]);
             }
+            
+                echo $_POST["severity"];
              //====================================================
             //	check validation of "$severity" input
             //====================================================            
@@ -131,12 +133,28 @@ class TasksTool
                 echo "severity";
                 $data_correct = 0;
             } else {
-                $severity = test_input($_POST["severity"]);
+                $severity_val = test_input($_POST["severity"]);
             }
+            //====================================================
+            //	check validation of "$Days" input
+            //====================================================            
+            if (empty($_POST['Days'])) {
+                echo "empty days ";
+                $data_correct = 0;
+            } else {
+            echo "line145";
+                    $days_value="";
+                    foreach($_POST['Days'] as $selected){
+                    $days_value= $days_value.$selected."_";
+                    echo $selected."</br>";
+                    }
+                echo "days_value:".$days_value;
+            }       
+            
              //====================================================
             //	check validation of "$account_name" input
             //====================================================            
-            if (!($data_correct == 0) || empty($_POST["account_name"])) {
+            if (empty($_POST["account_name"])) {
                 $data_correct = 0;
             } else {
                 $account_name = test_input($_POST["account_name"]);
@@ -152,7 +170,7 @@ class TasksTool
             // if(isset($_POST['attachment'])){
             // echo "i'm set :(";
             // }
-            if(!(isset($_FILES['attachment'])) && $_FILES['attachment']['size'] > 0)
+            if((!isset($_FILES['attachment'])) || !($_FILES['attachment']['size'] > 0))
             {
                 echo "file not found";
                 $data_correct = 0;
@@ -161,11 +179,12 @@ class TasksTool
            {
             echo "inside isset";
             echo $_FILES['attachment']['name'];
-            echo "mytry";
+            //echo "mytry";
             $fileName = $_FILES['attachment']['name'];
             $tmpName  = $_FILES['attachment']['tmp_name'];
             $fileSize = $_FILES['attachment']['size'];
             $fileType = $_FILES['attachment']['type'];
+            
             $fp= fopen($tmpName, 'r');
             $content = fread($fp, filesize($tmpName));
             $content = addslashes($content);
@@ -179,30 +198,40 @@ class TasksTool
             echo "<br>File $fileName uploaded<br>";
             } 
 
-            
+            //echo "data_correct $data_correct"; 
             //====================================================
             //when all inputs are correct-
             //  insert new cluster with account to dbt_name" input
             //====================================================             
             if ($data_correct == 1){
-            echo "data_correct";
+                //echo "data_correct: $data_correct";
+                //echo "start insert to db";
                 //$account_col = __cluster_tl_account_name;
-                $query = "SELECT count(*) From `clusters` WHERE ".__cluster_tl_account_name." LIKE '$account_name' OR ".__cluster_tl_cluster_name." LIKE '$cluster_name'";
+                $query = "SELECT count(*) From `general_tasks` WHERE ".__tasks_tl_task_name." LIKE '$task_name' OR ".__tasks_tl_task_id." LIKE '$task_id'";
                 $is_account_exist = mysql_query($query) or die(mysql_error());
                 $result =  mysql_result($is_account_exist, 0) ;
                 if (! ($result == 0)){
-                    //header('location: ../industrialProject/addnewcluster.php');
                     echo '<script language="javascript">';
                     echo 'alert("Account or cluster already exist in this cluster")';
                     echo '</script>';
-                    //header('location: ../industrialProject/addnewcluster.php');
-
-                    //echo "Account or cluster already exist in this cluster";
-                } else {
-                    mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`)
-                        VALUES('$cluster_name', '$account_name')") or die(mysql_error());
-                    echo "cluster added successfully";
-                    include_once "addnewcluster.php";
+                   
+                 } else {
+                echo "severity_val".$severity_val;
+                    $colomns= __tasks_tl_task_name.','.__tasks_tl_task_id.','.__tasks_tl_role.','.__tasks_tl_account.','.__tasks_tl_severity.','.__tasks_tl_days;
+                    $insertQuery = "INSERT INTO general_tasks ($colomns) VALUES('$task_name', '$task_id','$role', '$account_name', '$severity_val', '$days_value')";
+                    $insertResult = mysql_query($insertQuery) or die(mysql_error());
+					
+					if(mysql_errno()){
+						echo "MySQL error ".mysql_errno().": "
+						.mysql_error()."\n<br>When executing <br>\n$insertQuery\n<br>";
+					}
+					else {
+						// if insert succeeded
+						echo "<script type=\"text/javascript\"> alert(\"Task was added successfully!\"); </script>";
+						header('Location: ../cssmenu/mainPage.php');
+					}
+                    echo "task added successfully";
+                    include_once "addnewTask.php";
                 }
                 
             }
