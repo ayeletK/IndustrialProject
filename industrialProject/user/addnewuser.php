@@ -49,70 +49,71 @@
           <div class='form-group'>
            <label class='control-label col-md-2 col-md-offset-2' for="realName">Real Name:</label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="realName" id="realName" size="25" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
             </div>
-           </div>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
+            </div>
+            </div>
           <div class='form-group'>
            <label class='control-label col-md-2 col-md-offset-2' for="userName">User Name: </label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="userName" id="userName" size="25" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
+            </div>
+           <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
             </div>
            </div>
           <div class='form-group'>
            <label class='control-label col-md-2 col-md-offset-2' for="password">Password: </label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="password" name="password"  value="unix-11" id="password" size="16" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
+            </div>
+          <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
             </div>
            </div>
           <div class='form-group'>
            <label class='control-label col-md-2 col-md-offset-2' for="mail">Amdocs Mail: </label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="mail" id="mail" size="30" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
+            </div>
+                        <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
             </div>
            </div>
           <div class='form-group'>
            <label class='control-label col-md-2 col-md-offset-2' for="phone">Phone: </label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="phone" id="phone" size="30" maxlength="15" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
             </div>
-           </div>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
+            </div>
+            </div>
           <div class='form-group'>
            <label class='control-label col-md-2 col-md-offset-2' for="role">Role: </label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <?php
                 include_once '../helpers/getEnumValuesFromTable.php';
                 echo enumDropdown('users',__users_tl_role);
 						?>
-                </a>
+              
+            </div>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
             </div>
            </div>                
           <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="account">Account: Mail: </label>
+           <label class='control-label col-md-2 col-md-offset-2' for="account">Account: </label>
             <div class='col-md-2' >
             <?php
             include_once '../helpers/getDropDownListFromTableData.php';
             echo dataDropdown('clusters',__cluster_tl_account_name);
 			?>
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
-                <input class="form-control" type="text" name="mail" id="mail" size="30" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
+                </div>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
             </div>
            </div>
            <div class='form-group'>

@@ -27,6 +27,12 @@
 <body>
 
   <div class='container'>
+  <script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+   
     <div class='panel panel-primary dialog-panel'>
       <div class='panel-heading'>
         <h5>Adding new cluster to system</h5>
@@ -40,16 +46,19 @@
             <input class="form-control" type="text" name="cluster_name" id="cluster_name" size="25" maxlength="30" width="7%" onblur="return validate_cluster_name(value);" required/>
              <span id="cluster_err" style="display: none;">you must enter a legal cluster which doesnt already exist</span>
             </div>
-            <span class="error" id='error1'>*<?php echo $clusterErr;?></span>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
+            </div>
           </div>
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account name:</label>
             <div class='col-md-2'>
                 <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%" onblur="return validate_account_name(value);" required/>
-                <span id="account_err" style="display: none;">you must enter a legal account which doesnt already exist</span>
             </div>
-            <td><span class="error"> *<?php echo $AccountErr;?></span></td>
-          </div>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
+            </div>            
+            </div>
           <div class='form-group'>
               <button class='btn-lg btn-primary' type="submit" name="new_task" id="new_task">Add new Cluster</button>
             <div class='col-md-offset-4 col-md-3'>

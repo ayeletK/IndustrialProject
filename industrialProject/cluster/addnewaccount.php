@@ -40,9 +40,11 @@
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account name:</label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Can include only Letters and digits">
                 <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%" onblur="return validate_account_name(value);" required />
-                </a>
+            </div>
+            <div class='col-md-2' >
+          
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
             </div>
 <script>
 $(document).ready(function(){

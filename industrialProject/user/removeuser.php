@@ -45,24 +45,24 @@
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for="realName">Search by real name:  -- not supported yet -- name:</label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="realName" id="realName" size="25" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
             </div>
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
 </script>
+            <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
+            </div>
            </div>
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for="userName">Search by user name:  -- not supported yet --</label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="userName" id="userName" size="25" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
+               </div>
+             <div class='col-md-2' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">        
             </div>
            </div>
            <div class='form-group'>
