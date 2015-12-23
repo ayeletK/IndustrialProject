@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="">
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="styles.css">
+   <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+   <script src="script.js"></script>
+   <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+   <script src="script2.js"></script>
+   <title>Welcome to Amdocs Task Management Tool</title>
+</head>
+<body>
+<!-- toolbar-->
+    <header> 
+	<div>	
+		<ul>
+			<li><img src="images/Amdocs-logo.gif" type="image" alt="amdocs_icon" width="250"></li>
+		</ul>
+		<nav>
+    			<ul class="sf-menu dropdown">
+				<li><a href="../user/logout.php">Logout</a></li>
+	<li><a href="#">Report a problem</a></li>
+
+       			</ul>
+			<div class="clear"></div>
+    		</nav>
+       	</div>
+
+	<div class="clear"></div>
+
+       
+    </header>
+<div id="body">
+
+	<div id="cssmenu">
+	<ul>
+	   <li class="active"><a href="#"><span>Home</span></a></li>
+	   <li class="has-sub"><a href="#"><span>function</span></a>
+		  <ul>
+			 <li><a href="../cluster/addnewcluster.php"><span>add new cluster</span></a></li>
+			 <li><a href="../cluster/addnewAccount.php"><span>add new account</span></a></li>
+			 <li><a href="../cluster/removeCluster.php"><span>remove existing cluster</span></a></li>
+			 <li class="last"><a href="#"><span>remove account from Cluster</span></a></li>
+		  
+		  </ul>
+	   </li>
+	   <li class="has-sub"><a href="#"><span>Schedule</span></a>
+		  <ul>
+			 <li><a href="#"><span>Production Schedule</span></a></li>
+			 <li class="last"><a href="#"><span>Run list schedule</span></a></li>      
+		  </ul>
+	   </li>   
+	   <li class="has-sub"><a href="#"><span>Users</span></a>
+		  <ul>
+			 <li><a href="../user/addnewuser.php"><span>Add new user</span></a></li>
+			 <li class="last"><a href="../user/removeuser.php"><span>Remove user</span></a></li>      
+		  </ul>
+	   </li>   
+	   <li class="has-sub"><a href="#"><span>Tasks</span></a>
+		  <ul>
+			 <li><a href="../task/addnewTask_design.php"><span>add new Task</span></a></li>
+			 <li class="last"><a href="../schedule/addnewSchedule.php"><span>add new Schedule</span></a></li>
+		  </ul>
+	   </li>
+	   <li class="has-sub"><a href="#"><span>Reports</span></a>
+		  <ul>
+			 <li><a href="#"><span>Production Flow charts</span></a></li>
+			 <li class="last"><a href="#"><span>Task list report</span></a></li>      
+		  </ul>
+	   </li>     
+	   <li class="has-sub"><a href="#"><span>About</span></a>
+		  <ul>
+			 <li><a href="#"><span>Company</span></a></li>
+			 <li class="last"><a href="#"><span>Contact</span></a></li>
+		  </ul>
+	   </li>
+	   <li class="has-sub"><a href="#"><span>Administration</span></a>
+		  <ul>
+			 <li><a href="#"><span>User Admin</span></a></li>
+			 <li class="last"><a href="#"><span>Task Wiper</span></a></li>      
+		  </ul>
+	   </li> 
+	   <li class="last"><a href="#"><span>Log out</span></a></li>
+	   <li class="last"><a href="#"><span>To be continue</span></a></li>
+	</ul>
+	</div>
+	<section id="content" class="three-column">
+	</section>
+</div>
+<!-- <div id='cssmenu2' >
+
+<ul class>
+   <li class='active'><a href='#'><span>H</span></a></li>
+   <li><a href='#'><span>To be continue 1</span></a></li>
+   <li><a href='#'><span>To be continue 2</span></a></li>
+   <li class='last'><a href='#'><span>To be continue 3</span></a></li>
+
+</ul>
+<span class="js-socket-channel js-updatable-content" data-channel="notification-changed:hilalevavi" data-url="/notifications/header">
+      <a href="/notifications" aria-label="You have no unread notifications" class="header-nav-link notification-indicator tooltipped tooltipped-s" data-ga-click="Header, go to notifications, icon:read" data-hotkey="g n">
+          <span class="mail-status all-read"></span>
+          <span class="octicon octicon-bell"></span>
+</a>  </span>
+
+</div>
+-->
+<!-- end of toolbar-->
+<!-- enable print page dialog-->
+<p>"Print" dialog with printer icon:</p>
+<p><a href="JavaScript:window.print();">Print this page</a></p>
+</body>
+<html>
