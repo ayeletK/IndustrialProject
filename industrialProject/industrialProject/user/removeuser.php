@@ -16,47 +16,48 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
+
+
 <body>
 <?php
     
     include_once "../common/base.php";
-    $pageTitle = "Register";
-	
-	// define variables and set to empty values
-	$realNameErr = $userNameErr = $passwordErr = $mailErr = $phoneErr = $roleErr = "";
+    // define variables and set to empty values
+	 $clusterErr="";
+	 $cluster_name="";
 
 	//include_once "scripts/showHide.php";
     
-    if(!empty($_POST['realName']) && !empty($_POST['userName']) && !empty($_POST['password']) && !empty($_POST['mail'])) {
+    if(!empty($_POST['usersData'])) {
 		include_once "../inc/class.users.inc.php";
 		$users = new ToolUsers(db);
-		echo $users->CreateUser();
+		echo $users->RemoveUser();
 	}
 ?>
 
   <div class='container'>
     <div class='panel panel-primary dialog-panel'>
       <div class='panel-heading'>
-        <h5>Add new User</h5>
+        <h5>Remove user</h5>
       </div>
       <div class='panel-body'> 
-        <script>
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();   
-        });
-        </script>
-      <form class='form-horizontal' role='form' method="post" action="addnewuser.php" id="registerform">
+        <form class='form-horizontal' role='form' method="post" action="removeuser.php">
           <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="realName">Real Name:</label>
+            <label class='control-label col-md-2 col-md-offset-2' for="realName">Search by real name:  -- not supported yet -- name:</label>
             <div class='col-md-2' >
                 <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="realName" id="realName" size="25" maxlength="30" width="7%" onchange="changeTest(this.form)" />
                 <!--onblur="return validate_account_name(value);"-->
                 </a>
             </div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
            </div>
           <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="userName">User Name: </label>
+            <label class='control-label col-md-2 col-md-offset-2' for="userName">Search by user name:  -- not supported yet --</label>
             <div class='col-md-2' >
                 <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
                 <input class="form-control" type="text" name="userName" id="userName" size="25" maxlength="30" width="7%" onchange="changeTest(this.form)" />
@@ -64,60 +65,18 @@
                 </a>
             </div>
            </div>
-          <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="password">Password: </label>
-            <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
-                <input class="form-control" type="password" name="password"  value="unix-11" id="password" size="16" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
-            </div>
-           </div>
-          <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="mail">Amdocs Mail: </label>
-            <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
-                <input class="form-control" type="text" name="mail" id="mail" size="30" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
-            </div>
-           </div>
-          <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="phone">Phone: </label>
-            <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
-                <input class="form-control" type="text" name="phone" id="phone" size="30" maxlength="15" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
-            </div>
-           </div>
-          <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="role">Role: </label>
-            <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
-                <?php
-                include_once '../helpers/getEnumValuesFromTable.php';
-                echo enumDropdown('users',__users_tl_role);
-						?>
-                </a>
-            </div>
-           </div>                
-          <div class='form-group'>
-           <label class='control-label col-md-2 col-md-offset-2' for="account">Account: Mail: </label>
-            <div class='col-md-2' >
-            <?php
-            include_once '../helpers/getDropDownListFromTableData.php';
-            echo dataDropdown('clusters',__cluster_tl_account_name);
-			?>
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Ayelet- if you want change here an include only Letters and digits">
-                <input class="form-control" type="text" name="mail" id="mail" size="30" maxlength="30" width="7%" onchange="changeTest(this.form)" />
-                <!--onblur="return validate_account_name(value);"-->
-                </a>
-            </div>
-           </div>
            <div class='form-group'>
+           <div class='col-md-offset-4 col-md-3'>
+           	<?php 
+					include_once '../helpers/getDropDownListFromTableData.php';
+					$columns = array(__users_tl_real_name,__users_tl_user_name);
+					echo getColumnsFromTable('users',$columns, 10);
+			?>
+           </div>
+           </div>
+          <div class='form-group'>
             <div class='col-md-offset-4 col-md-3'>
-              <button class='btn-lg btn-primary' type="submit" name="register" id="register" value="Register user" onclick="return confirm('Are you sure?')">Remove </button>
+              <button class='btn-lg btn-primary' type="submit" name="register" id="register" value="Remove user" onclick="return confirm('Are you sure?')">Remove </button>
             </div>
           </div>
         </form>
@@ -135,6 +94,7 @@
     </div>
   </div>
 </body>
+<script src="addnewcluster.js"></script>
 <script language="javascript" type="text/javascript">
 	function changeTest ( form ) 
 	{

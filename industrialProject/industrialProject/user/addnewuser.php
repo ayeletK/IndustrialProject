@@ -25,6 +25,7 @@
 	// define variables and set to empty values
 	$realNameErr = $userNameErr = $passwordErr = $mailErr = $phoneErr = $roleErr = "";
 
+    //include_once "../common/header.php";
 	//include_once "scripts/showHide.php";
     
     if(!empty($_POST['realName']) && !empty($_POST['userName']) && !empty($_POST['password']) && !empty($_POST['mail'])) {

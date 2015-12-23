@@ -3,12 +3,11 @@
 	/*
 	*	create drop down list containing all values under 'column_name' in table 'table_name'
 	*/
-	function dataDropdown($table_name, $column_name, $pred="",$echo = false)
+	function dataDropdown($table_name, $column_name, $echo = false)
 	{
-
 		$lower_column_name=strtolower($column_name);
 		$selectDropdown = "<select name=\"$lower_column_name\">";
-		$query = "SELECT DISTINCT $column_name FROM `$table_name`".$pred;// WHERE Expired IS NULL";
+		$query = "SELECT $column_name FROM `$table_name`";// WHERE Expired IS NULL";
 		//echo $query;
 		$result = mysql_query($query) or die (mysql_error());
 
