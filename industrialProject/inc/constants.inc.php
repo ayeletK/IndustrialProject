@@ -45,6 +45,7 @@
 	define("__tasks_tl_role", "role");
 	define("__tasks_tl_frequency", "frequency");
 	define("__tasks_tl_account", "account");
+	define("__tasks_tl_instruction", "instruction");
 	define("__tasks_tl_expired", "expired");
 	
     // Attachment table fields credentials

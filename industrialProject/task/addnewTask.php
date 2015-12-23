@@ -3,17 +3,18 @@
     
     include_once "../common/base.php";
 	// define variables and set to empty values
-	$taskNameErr = $taskIdErr = $durationErr = $roleErr = "";
+	$taskNameErr = $taskIdErr = $durationErr = $roleErr = $repetitionErr= "";
 	
 	// regEx for client side validation check
 	$taskNameRegEx = '/^[A-Za-z](\d)+$/';
-    $durationRegEx = '(\d){1:3}';
+    $durationRegEx = '(\d){1,3}';
     $taskIdRegEx = '/^[A-Za-z](\d)+$/';
-    
-    
-	
-echo "hi";
-    if(!empty($_POST['task_name']) && !empty($_POST['task_id']) && isset($_FILES['attachment'])  && !empty($_POST['Days']) && !empty($_POST['role']) && !empty($_POST['account_name']) && !empty($_POST['duration']) && !empty($_POST['severity'])){  //!empty($_POST['instruction']) && !empty($_POST['frequency']) && !empty($_POST['attachment']) && !empty($_POST['role']) && !empty($_POST['account']) && !empty($_POST['task_description']) && !empty($_POST['duration']) && !!empty($_POST['days']) && !empty($_POST['schedule_id'])) {
+    $repetitionRegEx = '(\d){1,3}' ;
+
+//if(!empty($_POST['id_instructions'])){
+//TODO: handle repetitions!!
+    if(!empty($_POST['task_name']) && !empty($_POST['task_id']) && isset($_FILES['attachment'])  && !empty($_POST['Days']) && !empty($_POST['frequency']) &&!empty($_POST['role']) && !empty($_POST['account_name']) && !empty($_POST['duration']) && !empty($_POST['severity']) && !empty($_POST['id_instructions'])){  
+    //!empty($_POST['instruction']) && !empty($_POST['frequency'])   !empty($_POST['task_description'])  && !empty($_POST['schedule_id'])) {
        echo "1";
         include_once "../inc/class.tasks.inc.php";
             $task_group = new TasksTool(db);
@@ -84,19 +85,50 @@ $(document).ready(function(){
             <div class='col-md-1' >
             <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">        
             </div>
-            <label class='control-label col-md-1' for='duration'>Duration</label>
-            <div class='col-md-3'>
+            </div>
+               
               <div class='form-group'>
-                <div class='col-md-3'>
-                  <input class='form-control' name='duration' id='duration' placeholder='' type='text' maxlength='30' onblur="return validate_input(id, <?php echo $durationRegEx; ?>, 'taskNameErr');>
+            <label class='control-label col-md-1' for='duration'>Duration</label>
+
+              <div class='col-md-2'>
+                  <input class='form-control' name='duration' id='duration' placeholder='' type='number' maxlength='30' onblur="return validate_input(id, <?php echo $durationRegEx; ?>, 'taskNameErr');>
                 </div>
               <div class='col-md-1' >
             <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="(In hours)- time the task should be completed">        
             </div>
-            <div class="error" id="durationErr"></div>
+            <div class='col-md-2'>
+              <select class='form-control' id='type_time' name="type_time">
+                <option value="Minutes">Minutes</option>
+                <option value="Hours">Hours</option>
+              </select>
             </div>
-          </div>   
-          </div>   
+ <div class="error" id="durationErr"></div>
+           
+            </div>
+            
+      
+          <div class='form-group'>
+            <label class='control-label col-md-1' for='frequency'>Frequency</label>
+            <div class='col-md-2'>
+              <select class='form-control' id='frequency' name="frequency">
+                <option value="Hourly">Hourly</option>
+                <option value="Dayly">Dayly</option>
+                <option value="Weekly">Weekly</option>
+                <option value="None" selected='default'>None</option>
+              </select>
+            </div>
+            </div>
+          <div class='form-group'>
+            <label class='control-label col-md-2 col-md-offset-2' for='Repetition'>Repetitions</label>
+            <div class='col-md-3'>
+              <div class='make-switch' data-off-label='NO' data-on-label='YES' id='id_repetition_switch'>
+                <input id='repetition' name='repetition' type='checkbox' >                <!--value='chk_hydro'-->
+            </div>    
+              </div>
+              
+<div class='control-label col-md-1'> <input id='with_repetition' name='with_repetition' type="number" value="number" onblur="return validate_input(id, <?php echo $repetitionRegEx; ?>, 'repetitionErr');"></div>
+            
+          </div>
           <div class='form-group'>
             <label class='control-label col-md-1' for='Days'>Days</label>
             <div class='col-md-10'>
@@ -107,7 +139,9 @@ $(document).ready(function(){
              <input type="checkbox" name="Days[]" value="Thursday" /> Thursday
              <input type="checkbox" name="Days[]" value="Friday" /> Friday
              <input type="checkbox" name="Days[]" value="Saturday" /> Saturday
-            </div>
+             <input type="checkbox" name="Days[]" value="None" /> None
+
+             </div>
             <div class='col-md-1' >
             <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">        
             </div>  
@@ -136,7 +170,7 @@ $(document).ready(function(){
               <div class='form-group'>
                 <label class='control-label col-md-2 col-md-offset-2' for='id_instructions'>Instructions</label>
                 <div class='col-md-6'>
-                  <textarea class='form-control' id='id_instructions' placeholder='Type here' rows='3'></textarea>
+                  <textarea class='form-control' id='id_instructions' name='id_instructions' placeholder='Type here' rows='3'></textarea>
                 </div>
               </div> 
                         <div class='form-group'>
