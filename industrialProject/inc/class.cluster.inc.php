@@ -176,31 +176,45 @@ class ClustersTool
     public function RemoveCluster()
     {
         echo "RemoveCluster";
+        
         //add are you sure you want to remove this cluster?
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data_correct = 1;
-            if (empty($_POST["cluster_name"])) {
+
+            //====================================================
+            //	validate cluster was chose and not empty
+            //====================================================             
+            if (empty($_POST['cluster_name'])) {
                 $data_correct = 0;
                 echo "<script type=\"text/javascript\"> alert(\"cluster to remove wasn't selected\"); </script>";
             }
            
-            //echo"data correct?". $data_correct;
-            if ($data_correct == 1){
-                $cluster_name = test_input($_POST["cluster_name"]);
-                //echo "$cluster_name".$cluster_name; 
-                $query = "DELETE FROM `".__cluster_table_name."` WHERE ".__cluster_tl_cluster_name." LIKE '$cluster_name'";
-                $is_cluster_exist = mysql_query($query) or die(mysql_error());
-                $result =  mysql_result($is_cluster_exist, 0);
-                if (! ($result == 0)){
-                echo "<script type=\"text/javascript\"> alert(\"removed this cluster\"); </script>";
-                } else {
+            //====================================================
+            //	if all the input are correct- turn a cluster and all
+            //its related account to expired in db
+            //==================================================== 
+           
+           if ($data_correct == 1){
+                $cluster_name = test_input($_POST['cluster_name']);
+                $date = date("Y-m-d");
+                $removeQuery = "UPDATE clusters SET ".__cluster_tl_expired_date ."='$date',".__cluster_tl_date_modified." = '$date' WHERE ".__cluster_tl_cluster_name." LIKE '$cluster_name'";
+                $removeQuery = mysql_query($removeQuery) or die(mysql_error());
                 
-                echo "<script type=\"text/javascript\"> alert(\"unable to remove this cluster\"); </script>";
-                   
-                    }       //close else case
+            if (! (mysql_errno())){
+                    echo '<script language="javascript">';
+                    echo 'alert("removed cluster Successfully!")';
+                    echo '</script>';                   
+            } else {
+                    echo '<script language="javascript">';
+                    echo 'alert("unable to remove this cluster")';
+                    echo '</script>';                
+                    }      //close else case
             }               //close remove section
         }                   //close if $_SERVER["REQUEST_METHOD"] section
      }                      //close function RemoveCluster
+     
+     
+     
      
     public function accoountCheck(&$account_name, &$data_correct){
         if (empty($_POST["account_name"])) {

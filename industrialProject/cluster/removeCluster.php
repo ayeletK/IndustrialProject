@@ -50,7 +50,7 @@
                 <div class='form-group internal'>                
                 <?php
                 
-                $query = mysql_query("SELECT DISTINCT ".__cluster_tl_cluster_name." FROM `clusters` WHERE ".__cluster_tl_expired_date." IS NULL"); // Run your query
+                $query = mysql_query("SELECT DISTINCT ".__cluster_tl_cluster_name." FROM `clusters` WHERE ".__cluster_tl_expired_date." IS NULL ORDER BY ".__cluster_tl_cluster_name." ASC"); // Run your query
 
                 echo '<select class="form-control" name="cluster_name">'; // Open your drop down box
 
@@ -72,12 +72,16 @@
           </div>
         </form>
         <div class='col-md-3'>
-            <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel" onclick="return confirm('Are you sure?')">Cancel</button>
+            <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel" onclick="return confirm_out('Are you sure?')">Cancel</button>
                 <script>
-                 $('#cancelButton').on('click', function (e) {
-                    window.location.href ="../cssmenu/mainPage.php";
-                    }
-                 )
+        
+                 function confirm_out() {
+   
+    if (confirm("are you sure?") == true) {
+        window.location.href ="../cssmenu/mainPage.php";
+     }
+    }
+
                  </script>
         </div>        
       </div>
