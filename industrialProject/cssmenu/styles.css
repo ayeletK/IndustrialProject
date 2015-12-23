@@ -483,15 +483,26 @@ img {
 
 #content {
     margin-top: 10px;
-    padding-top: 15%;
-	opacity: 1;
-	padding: 10%;
+	/* opacity: 1; */
+	padding-top: 1%;
+	padding-bottom: 5%;
+	padding-left: 2%;
+	padding-right: 5%;
 	background-color: #2A2E32;
-    	float: left;
+	float: left;
 	border-radius: 4px;
-	width: 45%;
+	width: 55%;
     height: auto;
 }
+
+/* ************** Ayelet added 19/12/15 ************** */
+iframe {
+	/* background: white; */
+    width: auto;
+    height: 900px;
+    /* position: fixed; */
+}
+/* ************** End of - Ayelet added 19/12/15 ************** */
 
 .two-column {
 	width: 66%;

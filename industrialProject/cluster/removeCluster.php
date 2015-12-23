@@ -1,17 +1,8 @@
-<!DOCTYPE HTML> 
-<html>
-<head>
-    <style>
-
-    </style>
-<style>
-.error {color: #00FF00;}
-</style>
-</head>
-<body> 
 <?php
-
-	include '../common/base.php';
+	include_once '../common/base.php';
+	
+	// check user is logged in and is certified to remove existing cluster from the system
+	if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']=='SM'):
 
 	// define variables and set to empty values
 	global $clusterErr ,$cluster_name ;
@@ -22,7 +13,18 @@
 		$cluster_group = new ClustersTool(db);
         echo $cluster_group->RemoveCluster();
      }
-?>  
+?>
+<!DOCTYPE HTML> 
+<html>
+<head>
+    <style>
+
+    </style>
+<style>
+.error {color: #00FF00;}
+</style>
+</head>
+<body>  
 <head>
   <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
   <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css' rel='stylesheet' type='text/css'>
@@ -82,4 +84,19 @@
     </div>
   </div>
 </body>
-
+</html>
+<?php 
+	else:
+		if(!(isset($_SESSION['LoggedIn'])) || $_SESSION['LoggedIn']==0):
+?>
+	<meta http-equiv="refresh" content="0;../user/login.php">
+<?php
+		else:
+		echo "<script type=\"text/javascript\"> alert(\"This page is available for SM employees only!\"); </script>";
+?>
+	<meta http-equiv="refresh" content="0;../cssmenu/mainPage.php">
+<?php
+		endif;
+	endif;
+	//include_once "../common/close.php";
+?>

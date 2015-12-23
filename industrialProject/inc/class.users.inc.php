@@ -76,7 +76,7 @@ class ToolUsers
 				$userNameErr = "User Name field is required";
 			} else {
 				$userName = test_input($_POST["userName"]);
-				if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$userName)) {
+				if (!preg_match("/^(?!EXP_)[a-zA-Z0-9_\- ]*$/",$userName)) {
 					$userNameErr = 'invalid user name!';
 					$data_correct = 0;
 				}

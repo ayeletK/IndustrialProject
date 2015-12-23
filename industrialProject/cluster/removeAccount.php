@@ -1,18 +1,8 @@
-<!DOCTYPE HTML> 
-<html>
-<head>
-    <style>
-    </style>
-<style>
-.error {color: #00FF00;}
-</style>
-</head>
-<body> 
-
-
 <?php
-    
-    include_once "common/base.php";
+    include_once '../common/base.php';
+	
+	// check user is logged in and is certified to remove existing account from the system
+	if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']=='SM'):
 	
     // define variables and set to empty values
 	 global $clusterErr, $cluster_name;
@@ -27,6 +17,16 @@
             echo $cluster_group->removeAccountFromCluster();
     }
 ?>
+<!DOCTYPE HTML> 
+<html>
+<head>
+    <style>
+    </style>
+<style>
+.error {color: #00FF00;}
+</style>
+</head>
+<body> 
 
 <h2>remove An Account from Cluster</h2>
 <form class="form-signin" role="form" method="post" action="removeAccount.php"> 
@@ -69,3 +69,18 @@ echo '</select>';
 
 </body>
 </html>
+<?php 
+	else:
+		if(!(isset($_SESSION['LoggedIn'])) || $_SESSION['LoggedIn']==0):
+?>
+	<meta http-equiv="refresh" content="0;../user/login.php">
+<?php
+		else:
+		echo "<script type=\"text/javascript\"> alert(\"This page is available for SM employees only!\"); </script>";
+?>
+	<meta http-equiv="refresh" content="0;../cssmenu/mainPage.php">
+<?php
+		endif;
+	endif;
+	//include_once "../common/close.php";
+?>

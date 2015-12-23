@@ -1,2 +1,2 @@
 		</div>
-		<section id="content" width="200">
+		<section id="content" class="three-column">
