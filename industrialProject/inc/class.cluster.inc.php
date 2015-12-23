@@ -263,8 +263,8 @@ class ClustersTool
             //	update db
             //====================================================             
             if ($data_correct == 1){
-                mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`)
-                VALUES('$cluster_name', '$account_name')") or die(mysql_error());
+                mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`, `expired`)
+                VALUES('$cluster_name', '$account_name', NULL)") or die(mysql_error());
                     echo '<script language="javascript">';
                     echo 'alert("Account added successfully!")';
                     echo '</script>';            
