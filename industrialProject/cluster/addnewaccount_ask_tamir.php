@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <?php
 
-	include 'common/base.php';
+	include '../common/base.php';
 	
     // define variables and set to empty values
-	global $clusterErr, $AccountErr ,$cluster_name ,$account_name;
+	//global $clusterErr, $AccountErr ,$cluster_name ,$account_name;
     $clusterErr = $AccountErr = $cluster_name = $account_name = "";
     
     if(!empty($_POST['cluster_name']) && !empty($_POST['account_name'])) {
-		include_once "inc/class.cluster.inc.php";
-		$cluster_group = new ClustersTool($db);
+		include_once "../inc/class.cluster.inc.php";
+		$cluster_group = new ClustersTool(db);
 		echo $cluster_group->AddNewCluster();
      }
 ?>    
@@ -31,13 +31,13 @@
         <h5>Adding new cluster to system</h5>
       </div>
       <div class='panel-body'>
-        <form class='form-horizontal' role='form' method="post" action="addnewCluster.php">
+        <form class='form-horizontal' role='form' method="post" onsubmit="return validateClusterForm();" action="addnewCluster.php">
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='cluster_name:'>new cluster name:</label>
             <div class='col-md-2'>
             <input class="form-control" type="text" name="cluster_name" id="cluster_name" size="25" maxlength="30" width="7%"/>
             </div>
-            <span class="error">*<?php echo $clusterErr;?></span>
+            <span class="error" id='error1'>*<?php echo $clusterErr;?></span>
           </div>
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account name:</label>
@@ -47,8 +47,8 @@
             <td><span class="error"> *<?php echo $AccountErr;?></span></td>
           </div>
           <div class='form-group'>
-            <div class='col-md-offset-4 col-md-3'>
               <button class='btn-lg btn-primary' type="submit" name="new_task" id="new_task">Add new Cluster</button>
+            <div class='col-md-offset-4 col-md-3'>
             </div>
           </div>
         
@@ -57,7 +57,7 @@
             <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel">Cancel</button>
                 <script>
                  $('#cancelButton').on('click', function (e) {
-                    window.location.href ="/industrialProject/cssmenu/index.html";
+                    window.location.href ="../cssmenu/index.html";
                     }
                  )
                  </script>
@@ -66,3 +66,4 @@
     </div>
   </div>
 </body>
+<script src="addnewcluster.js"></script>

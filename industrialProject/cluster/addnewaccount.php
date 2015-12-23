@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <?php
     
-    include_once "common/base.php";
+    include_once "../common/base.php";
 	
 	// define variables and set to empty values
-	global $clusterErr, $AccountErr ,$cluster_name ,$account_name;
+	//global $clusterErr, $AccountErr ,$cluster_name ,$account_name;
     $clusterErr = $AccountErr = $cluster_name = $account_name = "";
  
     if(!empty($_POST['cluster_name']) && !empty($_POST['account_name'])) {
-		include_once "inc/class.cluster.inc.php";
-            $cluster_group = new ClustersTool($db);
+        include_once "../inc/class.cluster.inc.php";
+            $cluster_group = new ClustersTool(db);
             echo $cluster_group->addAccountToCluster();
        }
 ?> 
@@ -23,6 +23,11 @@
   <script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js' type='text/javascript'></script>
   <script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/js/bootstrap-switch.min.js' type='text/javascript'></script>
   <script src='http://davidstutz.github.io/bootstrap-multiselect/js/bootstrap-multiselect.js' type='text/javascript'></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 </head>
 <body>
   <div class='container'>
@@ -34,9 +39,16 @@
         <form class='form-horizontal' role='form' method="post" action="addnewaccount.php">
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account name:</label>
-            <div class='col-md-2'>
-                <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%"/>
+            <div class='col-md-2' >
+                <a href="#" data-placement="top" data-toggle="tooltip" title="Can include only Letters and digits">
+                <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%" onblur="return validate_account_name(value);" required />
+                </a>
             </div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
             <td><span class="error"> *<?php echo $AccountErr;?></span></td>
           </div>
           <div class='form-group'>
@@ -46,7 +58,7 @@
                 <?php
                 $query = mysql_query("SELECT DISTINCT cluster_name FROM clusters ORDER BY cluster_name ASC "); // Run your query
 
-                echo '<select class="form-control" name="cluster_name">'; // Open your drop down box
+                echo '<select class="form-control" name="cluster_name" required>'; // Open your drop down box
 
                 // Loop through the query results, outputing the options one by one
                 while ($row = mysql_fetch_array($query)) {
@@ -69,7 +81,7 @@
             <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel">Cancel</button>
                 <script>
                  $('#cancelButton').on('click', function (e) {
-                    window.location.href ="/industrialProject/cssmenu/index.html";
+                    window.location.href ="../cssmenu/index.html";
                     }
                  )
                  </script>
@@ -79,3 +91,4 @@
     </div>
   </div>
 </body>
+<script src="addnewcluster.js"></script>

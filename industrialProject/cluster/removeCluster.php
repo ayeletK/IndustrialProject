@@ -11,15 +11,15 @@
 <body> 
 <?php
 
-	include 'common/base.php';
+	include '../common/base.php';
 
 	// define variables and set to empty values
 	global $clusterErr ,$cluster_name ;
     $clusterErr = $cluster_name = "";
 
     if(!empty($_POST['cluster_name'])) {
-		include_once "inc/class.cluster.inc.php";
-		$cluster_group = new ClustersTool($db);
+		include_once "../inc/class.cluster.inc.php";
+		$cluster_group = new ClustersTool(db);
         echo $cluster_group->RemoveCluster();
      }
 ?>  
@@ -47,7 +47,8 @@
               <div class='col-md-2'>
                 <div class='form-group internal'>                
                 <?php
-                $query = mysql_query("SELECT DISTINCT cluster_name FROM `clusters` WHERE Expired IS NULL"); // Run your query
+                
+                $query = mysql_query("SELECT DISTINCT ".__cluster_tl_cluster_name." FROM `clusters` WHERE ".__cluster_tl_expired_date." IS NULL"); // Run your query
 
                 echo '<select class="form-control" name="cluster_name">'; // Open your drop down box
 
@@ -72,7 +73,7 @@
             <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel" onclick="return confirm('Are you sure?')">Cancel</button>
                 <script>
                  $('#cancelButton').on('click', function (e) {
-                    window.location.href ="/industrialProject/cssmenu/index.html";
+                    window.location.href ="../cssmenu/index.html";
                     }
                  )
                  </script>

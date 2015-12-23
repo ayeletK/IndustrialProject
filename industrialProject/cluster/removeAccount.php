@@ -22,7 +22,7 @@
 	//include_once "scripts/showHide.php";
     
     if(!empty($_POST['cluster_name'])) {
-		include_once "inc/class.cluster.inc.php";
+		include_once "../inc/class.cluster.inc.php";
             $cluster_group = new ClustersTool($db);
             echo $cluster_group->removeAccountFromCluster();
     }
@@ -44,7 +44,8 @@ while ($row = mysql_fetch_array($query)) {
 echo '</select>';
 
     $cluster_name = test_input($_POST["cluster_name"]);
-    $query = mysql_query("SELECT DISTINCT account_name FROM clusters WHERE cluster_name LIKE '$cluster_name' "); // Run your query
+    
+    $query = mysql_query("SELECT DISTINCT ".__cluster_tl_account_name." FROM clusters WHERE ".__cluster_tl_cluster_name." LIKE '$cluster_name' "); // Run your query
 
 echo '<select name="account_name">'; // Open your drop down box
 
