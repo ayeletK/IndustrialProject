@@ -7,8 +7,6 @@
 	   <link rel="stylesheet" href="../cssmenu/styles.css">
 	   <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 	   <script src="../cssmenu/script.js"></script>
-	   <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-	   <script src="../cssmenu/script2.js"></script>
 	   <title><?php echo $pageTitle ?></title>
 	</head>
 	<body>

@@ -160,7 +160,7 @@ $(document).ready(function(){
             <label class='control-label col-md-2 col-md-offset-2' for='Repetition'>Repetitions</label>
             <div class='col-md-8'>
               <div class='make-switch' data-off-label='NO' data-on-label='YES' id='id_repetition_switch'>
-                <input id='Repetition' type='checkbox' value='chk_hydro'>
+                <input id='Repetition' type='checkbox' >
               </div>
             </div>
           </div>

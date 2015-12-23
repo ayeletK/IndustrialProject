@@ -9,7 +9,7 @@ function validate_input(inputId, regEx, errId){
 			document.getElementById(errId).style.display = "none";
 			return true;
 		} else {
-			document.getElementById(inputId).style.background ='#e35152';
+			document.getElementById(inputId).style.background ='#E06D56';
 			document.getElementById(errId).style.display = "inline";
 			document.getElementById(errId).innerHTML = "invalid input!";
 			return false;
@@ -28,8 +28,19 @@ function validate_input(inputId, regEx, errId){
 			return true;
 		}
 	}
+} 
+function load_repetition_num_field( IDToDisplay){
+    //var current =document.getElementById(IDToDisplay).style;
+    if (document.getElementById(IDToDisplay).hidden != null){
+        document.getElementById(IDToDisplay).style.display = "inline";
+        return true;
+    } else {
+        document.getElementById(IDToDisplay).visibility = "hidden";;
+        return false;
+    }
 }
 
+                
 function checkform(form) {
     // get all the inputs within the submitted form
     var inputs = form.getElementsByTagName('input');

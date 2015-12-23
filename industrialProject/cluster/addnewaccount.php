@@ -40,21 +40,35 @@
       <div class='panel-body'>
         <form class='form-horizontal' role='form' method="post" action="addnewaccount.php">
           <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account name:</label>
+            <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account Name</label>
             <div class='col-md-2' >
-                <a href="#" data-placement="top" data-toggle="tooltip" title="Can include only Letters and digits">
-                <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%" onblur="return validate_account_name(value);" required />
-                </a>
+                <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%" onblur="return validate_input(id, <?php echo $clusterNameRegEx; ?>, 'error1');" required />
             </div>
+            <div class='col-md-2' >       
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
+            </div>
+            <div class="error" id="error1"></div>
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
 </script>
-            <td><span class="error"> *<?php echo $AccountErr;?></span></td>
           </div>
+            <div class='form-group'>
+
+            <!--	account dispersion		-->
+            <label class='control-label col-md-2 col-md-offset-2' for='mailing_list:'>Account Mail</label>
+            <div class='col-md-2'>
+                <input class="form-control" type="text" name="mailing_list" id="mailing_list" size="25" maxlength="150" 
+                    width="7%" onblur="return validate_input(id, <?php echo $dispersionMailRegEx; ?>, 'error1');" required />
+            </div>
+                        <div class='col-md-2' >       
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="For E-mail alerts about task enhancement for this account ">        
+            </div>
+            <div class="error" id="error1"></div>
+            </div>
           <div class='form-group'>
-              <label class='control-label col-md-2 col-md-offset-2' for='cluster_name'>Under Cluster:</label>
+              <label class='control-label col-md-2 col-md-offset-2' for='cluster_name'>Under Cluster</label>
               <div class='col-md-2'>
                 <div class='form-group internal'>                
                 <?php

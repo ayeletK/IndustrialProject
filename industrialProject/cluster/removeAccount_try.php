@@ -28,7 +28,7 @@ function getAccount(val) {
 	},
 	error: function(data){
 		alert("failed");
-		alert("dete is: "+data);
+		alert("data is: "+data);
 	}
 	});
 }

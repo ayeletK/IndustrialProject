@@ -1,28 +1,31 @@
+
+<!DOCTYPE html>
+<html>
 <?php
 	include_once '../common/base.php';
-	
+	 echo "hi1";
 	// check user is logged in and is certified to add new cluster to the system
 	if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']=='SM'):
 	
 	// regEx for client side validation check
-	$clusterNameRegEx = $accountNameRegEx = '/^[a-zA-Z0-9_\- ]+$/';
+	$clusterNameRegEx = $accountNameRegEx = '/^[a-zA-Z0-9_\-][a-zA-Z0-9_\- ]*$/';
+	$dispersionMailRegEx = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@[a-zA-z-_0-9]+\.com$/';
 	
     // define variables and set to empty values
     $cluster_name = $account_name = "";				//Ayelt-TODO: is it needed?
     
     if(!empty($_POST['cluster_name']) && !empty($_POST['account_name'])) {
+        echo "hi";
 		include_once "../inc/class.cluster.inc.php";
 		$cluster_group = new ClustersTool(db);
 		echo $cluster_group->AddNewCluster();
      }
 ?>    
-<!DOCTYPE html>
-<html>
 <head>
 	<link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 	<link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css' rel='stylesheet' type='text/css'>
 	<link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/css/bootstrap-switch.css' rel='stylesheet' type='text/css'>
-	<link href='http://davidstutz.github.io/bootstrap-multiselect/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css'>
+	<!--<link href='http://davidstutz.github.io/bootstrap-multiselect/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css'>-->
 	<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js' type='text/javascript'></script>
 	<script src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/js/bootstrap.min.js' type='text/javascript'></script>
 	<script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js' type='text/javascript'></script>
@@ -46,11 +49,11 @@
 				<h5>Adding new cluster to system</h5>
 			</div>
 			<div class='panel-body'>
-				<form class='form-horizontal' role='form' method="post" type="submit" action="addnewCluster.php">
+				<form class='form-horizontal' role='form' method="post" type="submit" action="mainPage.php">
 					<div class='form-group'>
 					
 						<!--	Cluster name		-->
-						<label class='control-label col-md-2 col-md-offset-2' for='cluster_name:'>new cluster name:</label>
+						<label class='control-label col-md-2' for='cluster_name:'>new cluster name:</label>
 						<div class='col-md-2'>
 							<input class="form-control" type="text" name="cluster_name" id="cluster_name" size="25" maxlength="30" 
 								width="7%" onblur="return validate_input(id, <?php echo $clusterNameRegEx; ?>, 'error1');" required />
@@ -61,7 +64,7 @@
 					<div class='form-group'>
 					
 						<!--	Account name		-->
-						<label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account name:</label>
+						<label class='control-label col-md-2' for='account_name'>Account name:</label>
 						<div class='col-md-2'>
 							<input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" 
 								width="7%" onblur="return validate_input(id, <?php echo $accountNameRegEx; ?>, 'error2');" required/>
@@ -69,6 +72,17 @@
 						</div>
 						<div class="error" id="error2"></div>
 					</div>
+                    <div class='form-group'>
+
+                    <!--	account dispersion		-->
+                    <label class='control-label col-md-2' for='account_dispersion:'>Account Mail (For E-mail alerts)</label>
+                    <div class='col-md-2'>
+                        <input class="form-control" type="text" name="account_dispersion" id="account_dispersion" size="25" maxlength="150" 
+                            width="7%" onblur="return validate_input(id, <?php echo $dispersionMailRegEx; ?>, 'error1');" required />
+        <!--						<span id="cluster_err" style="display: none;">you must enter a legal cluster which doesnt already exist</span>	-->
+                    </div>
+                    <div class="error" id="error1"></div>
+                    </div>
 					<div class='form-group'>
 					
 						<!--	Submit		-->

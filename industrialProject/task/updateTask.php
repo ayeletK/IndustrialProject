@@ -1,54 +1,44 @@
 <!DOCTYPE html>
 <?php
-
     include_once "../common/base.php";
-	// define variables and set to empty values
-	$taskNameErr = $taskIdErr = $durationErr = $roleErr = $repetitionErr= "";
 
+    // check user is logged in and is certified to add new user to the system
+    //if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']!='OPS'):
+
+    // define variables and set to empty values
+	$taskNameErr = $taskIdErr = $durationErr = $roleErr = $repetitionErr= "";
+	
 	// regEx for client side validation check
 	$taskNameRegEx = '/^[A-Za-z](\d)+$/';
     $durationRegEx = '(\d){1,3}';
     $taskIdRegEx = '/^[A-Za-z](\d)+$/';
     $repetitionRegEx = '(\d){1,3}' ;
 
-if(!empty($_POST['id_instructions'])){
+//if(!empty($_POST['id_instructions'])){
 //TODO: handle repetitions!!
-    if(!empty($_POST['frequency_type'])){
-    echo "1";
-    }
-    if(!empty($_POST['frequency_val'])){
-    echo "2";
-    }    
-    if(!empty($_POST['duration_type'])){
-    echo "3";
-    }
-    if(!empty($_POST['duration_val'])){
-    echo "4";
-    }
-    
-    //if(!empty($_POST['task_name']) && !empty($_POST['task_id']) && isset($_FILES['attachment'])  && !empty($_POST['Days']) && !empty($_POST['frequency']) &&!empty($_POST['role']) && !empty($_POST['account_name']) && !empty($_POST['duration']) && !empty($_POST['severity'])){
+    if(!empty($_POST['task_name']) && !empty($_POST['task_id']) && isset($_FILES['attachment'])  && !empty($_POST['Days']) && !empty($_POST['frequency']) &&!empty($_POST['role']) && !empty($_POST['account_name']) && !empty($_POST['duration']) && !empty($_POST['severity']) && !empty($_POST['id_instructions'])){  
     //!empty($_POST['instruction']) && !empty($_POST['frequency'])   !empty($_POST['task_description'])  && !empty($_POST['schedule_id'])) {
        echo "1";
         include_once "../inc/class.tasks.inc.php";
             $task_group = new TasksTool(db);
             //echo "oooo";
-            echo $task_group->AddGenericTask();
+            echo $task_group->updateGenericTask();
        }
-?>
+?> 
 <head>
   <link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
   <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css' rel='stylesheet' type='text/css'>
   <link href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/css/bootstrap-switch.css' rel='stylesheet' type='text/css'>
-<!--  <link href='http://davidstutz.github.io/bootstrap-multiselect/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css'>-->
+  <link href='http://davidstutz.github.io/bootstrap-multiselect/css/bootstrap-multiselect.css' rel='stylesheet' type='text/css'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 	<style>
 		.error {
-			color: #FF0033;
-			font-style: italic;
-			font-size: 12px;
-			font-weight: bold;
+			color: #FF0033; 
+			font-style: italic; 
+			font-size: 12px; 
+			font-weight: bold; 
 			vertical-align:-17px;
 			text-decoration: underline;
 		}
@@ -58,33 +48,45 @@ if(!empty($_POST['id_instructions'])){
   <div class='container'>
     <div class='panel panel-primary dialog-panel'>
       <div class='panel-heading'>
-        <h5>Adding new Task</h5>
+        <h5>Update Generic Task</h5>
       </div>
       <div class='panel-body'>
         <form class='form-horizontal' role='form' method="post" enctype="multipart/form-data" action="addnewTask.php">
           <div class='form-group'>
-            <label class='col-md-2' for='task_name'>Task Name</label>
-            <div class='col-md-2' >
-                <input class="form-control" type="text" name="task_name" id="task_name" size="25" maxlength="30" width="7%" onblur="return validate_input(id, <?php echo $taskNameRegEx; ?>, 'taskNameErr');" required />
-            </div>
-            <div class='col-md-1' >
-            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Task name include only Letters or digits">
-            </div>
-            <div class="error" id="taskNameErr"></div>
+            <label class='col-md-2 ' for='task_name'>Pick task by Task name field:</label>
+              <div class='col-md-2'>
+                <div class='form-group internal'>                
+                <?php
+                $query = mysql_query("SELECT DISTINCT task_name FROM generic_task ORDER BY task_name ASC "); // Run your query
+
+                echo '<select class="form-control" name="task_name" required onchange="load_task_data()">'; // Open your drop down box
+
+                // Loop through the query results, outputing the options one by one
+                while ($row = mysql_fetch_array($query)) {
+                   echo '<option value="'.$row['cluster_name'].'">'.$row['cluster_name'].'</option>';
+                }
+
+                echo '</select>';
+                ?> 
+                </div>
+              </div>					
+              </div>
+<div class='form-group'>              
 <script>
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();   
 });
+</script>
 </script>
             <label class='control-label col-md-2' for='task_id'>Task id:</label>
             <div class='col-md-2' >
-                <input class="form-control" type="text" name="task_id" id="task_id" size="25" maxlength="30" width="7%" onblur="return validate_input(id, <?php echo $taskIdRegEx; ?>, 'taskIdErr');" required />
+                <input class="form-control" type="text" name="task_id" id="task_id" size="25" maxlength="30" width="7%" onblur="return validate_input(id, <?php echo $taskIdRegEx; ?>, 'taskIdErr');" required value="" />
             </div>
             <div class='col-md-1' >
-                <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Task id include only Letters or digits">
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Task id include only Letters or digits">        
             </div>
             <div class="error" id="taskIdErr"></div>
-          </div>
+          </div>          
           <div class='form-group'>
             <label class='control-label col-md-1' for='role'>Role</label>
             <div class='col-md-2'>
@@ -95,85 +97,51 @@ $(document).ready(function(){
               </select>
             </div>
             <div class='col-md-1' >
-            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">        
             </div>
             </div>
-
+               
               <div class='form-group'>
             <label class='control-label col-md-1' for='duration'>Duration</label>
+
+              <div class='col-md-2'>
+                  <input class='form-control' name='duration' id='duration' placeholder='' type='number' maxlength='30' onblur="return validate_input(id, <?php echo $durationRegEx; ?>, 'taskNameErr');>
+                </div>
+              <div class='col-md-1' >
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="(In hours)- time the task should be completed">        
+            </div>
             <div class='col-md-2'>
-              <select class='form-control' id='duration_type' name="duration_type" onchange="return enable_enter_val('duration_type','duration_val2');">
+              <select class='form-control' id='type_time' name="type_time">
                 <option value="Minutes">Minutes</option>
                 <option value="Hours">Hours</option>
-                <option value="None" selected='default'>None</option>
               </select>
-            </div>
-              <div class='col-md-1' style="display: none;"name='duration_val2' id='duration_val2'>
-                  <input class='form-control'  name='duration_val' id='duration_val' placeholder='Number type='number' maxlength='30' hidden onblur="return validate_input(id, <?php echo $durationRegEx; ?>, 'taskNameErr');">
-                </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-function enable_enter_val(id, id_affected){
-//alert(id);
-    var val_origin = document.getElementById(id).value;
-    //alert(val_origin);
-    if (val_origin != 'None'){
-        document.getElementById(id_affected).style.display = 'block';
-    }
-    else {
-        document.getElementById(id_affected).style.display = 'none';
-    }
-};
-</script>
-
-                          <div class='col-md-1'>
-            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="(In hours)- time the task should be completed">
             </div>
  <div class="error" id="durationErr"></div>
-
+           
             </div>
-            <div class='form-group'>
-            <label class='control-label col-md-1' for='frequency_val'>Frequency</label>
+            
+      
+          <div class='form-group'>
+            <label class='control-label col-md-1' for='frequency'>Frequency</label>
             <div class='col-md-2'>
-              <select class='form-control' id='frequency_type' name="frequency_type" onchange="return enable_enter_val('frequency_type','frequency_val2');">>
-                <option value="Hours">Hours</option>
-                <option value="Days">Days</option>
-                <option value="Weeks">Weeks</option>
+              <select class='form-control' id='frequency' name="frequency">
+                <option value="Hourly">Hourly</option>
+                <option value="Dayly">Dayly</option>
+                <option value="Weekly">Weekly</option>
                 <option value="None" selected='default'>None</option>
               </select>
-              
-            </div>
-                        <div class='col-md-1' style="display: none;"  name='frequency_val2' id='frequency_val2'>
-                <input class='form-control' name='frequency_val' id='frequency_val' type="number" placeholder='Number' maxlength='30' >
-            </div>
-                        <div class='col-md-1'>
-            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="(In hours)- time the task should be completed">
             </div>
             </div>
           <div class='form-group'>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-function get_rep(id, id_affected){
-    var repetition_val= document.getElementById(id).checked;
-    if (repetition_val == true){
-        document.getElementById(id_affected).style.display = 'block';
-    }
-    else {
-        document.getElementById(id_affected).style.display = 'none';
-    }
-};
-</script>
-          <label class='control-label col-md-2 col-md-offset-2' for='Repetition'>Repetitions</label>
-            <div class='col-md-2'>
-              <div class='make-switch' data-off-label='NO' data-on-label='YES'  id='id_repetition_switch' >
-                <input id='repetitionid' name='repetitionid' class="repetitionid" type='checkbox' checked="true" onchange="return get_rep(id, 'num_repetition')" >                <!--value='chk_hydro'-->
-            </div>
+            <label class='control-label col-md-2 col-md-offset-2' for='Repetition'>Repetitions</label>
+            <div class='col-md-3'>
+              <div class='make-switch' data-off-label='NO' data-on-label='YES' id='id_repetition_switch'>
+                <input id='repetition' name='repetition' type='checkbox' >                <!--value='chk_hydro'-->
+            </div>    
               </div>
-
-<div class='with_repetition' id='with_repetition' name='with_repetition' >
- <input id="num_repetition" name='num_repetition' type="number" value="number" onblur="return validate_input(id, <?php echo $repetitionRegEx; ?>, 'repetitionErr');">
- </div>
-
+              
+<div class='control-label col-md-1'> <input id='with_repetition' name='with_repetition' type="number" value="number" onblur="return validate_input(id, <?php echo $repetitionRegEx; ?>, 'repetitionErr');"></div>
+            
           </div>
           <div class='form-group'>
             <label class='control-label col-md-1' for='Days'>Days</label>
@@ -189,14 +157,14 @@ function get_rep(id, id_affected){
 
              </div>
             <div class='col-md-1' >
-            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">
-            </div>
-          </div>
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Who should deal this task">        
+            </div>  
+          </div> 
           <div class='form-group'>
               <label class='control-label col-md-2 col-md-offset-2' for='account_name'>Account:</label>
               <div class='col-md-8'>
                 <div class='col-md-2'>
-                    <div class='form-group internal'>
+                    <div class='form-group internal'>                
                     <?php
                     $query = mysql_query("SELECT account_name FROM `clusters`"); // Run your query
 
@@ -208,25 +176,24 @@ function get_rep(id, id_affected){
                     }
 
                     echo '</select>';
-                    ?>
+                    ?> 
                     </div>
                 </div>
-              </div>
-          </div>
+              </div>          
+          </div> 
               <div class='form-group'>
                 <label class='control-label col-md-2 col-md-offset-2' for='id_instructions'>Instructions</label>
                 <div class='col-md-6'>
                   <textarea class='form-control' id='id_instructions' name='id_instructions' placeholder='Type here' rows='3'></textarea>
-                  
                 </div>
-              </div>
+              </div> 
                         <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='task_id'>attachment:</label>
             <div class='col-md-2' >
             <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-            <input name="attachment" type="file" id="attachment" required>
+            <input name="attachment" type="file" id="attachment" required> 
             </div>
-            </div>
+            </div> 
           <div class='form-group'>
             <label class='control-label col-md-2 col-md-offset-2' for='severity'>Task Severity</label>
             <div class='col-md-8'>
@@ -236,8 +203,28 @@ function get_rep(id, id_affected){
                 <option value="Low">Low</option>
               </select>
             </div>
-          </div>
+          </div>  
+       
+          <div class='form-group'>
+              <label class='control-label col-md-2 col-md-offset-2' for='task_id'>Under Cluster:</label>
+              <div class='col-md-2'>
+                <div class='form-group internal'>                
+                <?php
+                $query = mysql_query("SELECT DISTINCT cluster_name FROM clusters ORDER BY cluster_name ASC "); // Run your query
 
+                echo '<select class="form-control" name="cluster_name" required>'; // Open your drop down box
+
+                // Loop through the query results, outputing the options one by one
+                while ($row = mysql_fetch_array($query)) {
+                   echo '<option value="'.$row['cluster_name'].'">'.$row['cluster_name'].'</option>';
+                }
+
+                echo '</select>';
+                ?> 
+      
+                </div>
+              </div>
+              </div>
           <div class='form-group'>
             <div class='col-md-offset-4 col-md-3'>
               <button class='btn-lg btn-primary' type="submit" name="submit" id="submit">Add Task</button>
@@ -253,7 +240,7 @@ function get_rep(id, id_affected){
                  )
                  </script>
         </div>
-
+          
       </div>
     </div>
   </div>
@@ -263,8 +250,9 @@ function get_rep(id, id_affected){
   <script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js' type='text/javascript'></script>
   <script src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.8/js/bootstrap-switch.min.js' type='text/javascript'></script>
   <script src='http://davidstutz.github.io/bootstrap-multiselect/js/bootstrap-multiselect.js' type='text/javascript'></script>
-
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   </body>
+

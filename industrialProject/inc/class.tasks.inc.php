@@ -102,17 +102,24 @@ class TasksTool
             }
             echo "data_correct\n".$data_correct;
             //====================================================
-            //	check validation of "$frequency" input
+            //	check validation of "$frequency_val" and "$frequency_type" input
             //====================================================            
-            if ($data_correct == 0 || empty($_POST["frequency"])) {
-             echo "line108\n";
-           
+            if ($data_correct == 0 || empty($_POST["frequency_type"])) {
                 $data_correct = 0;
             } else {
-                $frequency = test_input($_POST["frequency"]);
-
+            $frequency_type = test_input($_POST["frequency_type"]);
+                if ($_POST["frequency_type"] != "None" &&  empty($_POST["frequency_val"])){
+                    $data_correct = 0;
+                    echo "frequency_val suppose to include number ";
+                    $frequency_val=-1;
+                 }
+                 else {
+                    //echo "frequency_type has meaning";
+                   
+                    $frequency_val = test_input($_POST["frequency_val"]);
+                    }
+                
             }
-            
             
             //====================================================
             //	check validation of "$duration" input
@@ -241,8 +248,8 @@ class TasksTool
                    
                  } else {
                 echo "severity_val".$severity_val;
-                    $colomns= __tasks_tl_task_name.','.__tasks_tl_task_id.','.__tasks_tl_role.','.__tasks_tl_account.','.__tasks_tl_severity.','.__tasks_tl_days.','.__tasks_tl_instruction;
-                    $insertQuery = "INSERT INTO general_tasks ($colomns) VALUES('$task_name', '$task_id','$role', '$account_name', '$severity_val', '$days_value','$instructions')";
+                    $colomns= __tasks_tl_task_name.','.__tasks_tl_task_id.','.__tasks_tl_role.','.__tasks_tl_account.','.__tasks_tl_frequency_type.','.__tasks_tl_frequency_val.','.__tasks_tl_severity.','.__tasks_tl_days.','.__tasks_tl_instruction.','.__tasks_tl_duration_type.','.__tasks_tl_duration_val;
+                    $insertQuery = "INSERT INTO general_tasks ($colomns) VALUES('$task_name', '$task_id','$role', '$account_name', '$frequency_type', '$frequency_val','$severity_val', '$days_value','$instructions')";
                     $insertResult = mysql_query($insertQuery) or die(mysql_error());
 					
 					if(mysql_errno()){
@@ -261,7 +268,7 @@ class TasksTool
             }
         }
      }// closing function addGenerictask
-    public function AddGenericTask()
+    public function UpdateGenericTask()
     {
     //echo "AddGenericTask1";
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -309,15 +316,23 @@ class TasksTool
             }
             echo "data_correct\n".$data_correct;
             //====================================================
-            //	check validation of "$frequency" input
+            //	check validation of "$frequency_val" and "$frequency_type" input
             //====================================================            
-            if ($data_correct == 0 || empty($_POST["frequency"])) {
-             echo "line108\n";
-           
+            if ($data_correct == 0 || empty($_POST["frequency_type"])) {
                 $data_correct = 0;
             } else {
-                $frequency = test_input($_POST["frequency"]);
-
+            $frequency_type = test_input($_POST["frequency_type"]);
+                if ($_POST["frequency_type"] != "None" &&  empty($_POST["frequency_val"])){
+                    $data_correct = 0;
+                    echo "frequency_val suppose to include number ";
+                    $frequency_val=-1;
+                 }
+                 else {
+                    //echo "frequency_type has meaning";
+                   
+                    $frequency_val = test_input($_POST["frequency_val"]);
+                    }
+                
             }
             
             

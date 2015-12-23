@@ -481,17 +481,17 @@ img {
 	clear: both;
 }
 
-#content {
-    margin-top: 10px;
+#content2{
+    /* margin-top: 0; */
 	/* opacity: 1; */
-	padding-top: 1%;
-	padding-bottom: 5%;
+	/* padding-top: 0%;
+	padding-bottom: 0%;
 	padding-left: 2%;
-	padding-right: 5%;
+	padding-right: 5%; */
 	background-color: #2A2E32;
 	float: left;
 	border-radius: 4px;
-	width: 55%;
+	width: 70%;
     height: auto;
 }
 
@@ -510,7 +510,7 @@ iframe {
 
 .three-column {
 	width: 46%;
-	margin: 0 2%;
+	margin: 0;
 }
 
 .with-right-sidebar {
@@ -576,14 +576,16 @@ article .article-info a {
 }
 
 .sidebar ul li {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	background-color: #2A2E32;
 	border-radius: 10px;
 	line-height: 1.9em;
 	padding: 10px;
 }
 
-
+#with_repetition{
+    style: hidden;
+}
 .sidebar ul li.bg, .sidebar ul li.bg li, .sidebar ul li.bg h4, .sidebar ul li.bg a, .sidebar ul li.bg a:hover {
 	background-color: #5DA1C3;
 	color: #fff;
