@@ -96,14 +96,18 @@ $(document).ready(function(){
           </div>
         </form>
         <div class='col-md-3'>
-            <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel">Cancel</button>
+            <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel" onclick="return confirm_out('Are you sure?')">Cancel</button>
                 <script>
-                 $('#cancelButton').on('click', function (e) {
-                    window.location.href ="../cssmenu/mainPage.php";
-                    }
-                 )
+        
+                 function confirm_out() {
+   
+    if (confirm("are you sure?") == true) {
+        window.location.href ="../cssmenu/mainPage.php";
+     }
+    }
+
                  </script>
-        </div>
+        </div>  
           
       </div>
     </div>

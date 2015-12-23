@@ -48,7 +48,7 @@
 			<ul>
 			   <li class="active"><a href="../cssmenu/mainPage.php"><span>Home</span></a></li>
 				<?php if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']=='SM'){ ?>
-			   <li class="has-sub"><a href="#"><span>function</span></a>
+			   <li class="has-sub"><a href="#"><span>Cluster Functionality</span></a>
 				  <ul>
              
 <script>
@@ -63,10 +63,10 @@ function LoadFile(url) {
   xhttp.send();
 }
 </script>
-					 <li><span onclick='LoadFile("../cluster/addnewCluster.php")'><a href="#">add new cluster</a></span></li>
-					 <li><a href="../cluster/addnewAccount.php"><span>add new account</span></a></li>
-					 <li><a href="../cluster/removeCluster.php"><span>remove existing cluster</span></a></li>
-					 <li class="last"><a href="#"><span>remove account from Cluster</span></a></li>
+					 <li><a href="../cluster/addnewCluster.php"><span>Add New Cluster</span></a></li>
+					 <li><a href="../cluster/addnewAccount.php"><span>Add New Account</span></a></li>
+					 <li><a href="../cluster/removeCluster.php"><span>Remove Existing Cluster</span></a></li>
+					 <li class="last"><a href="../cluster/removeAccount_try.php"><span>Remove Account From Cluster</span></a></li>
 				  
 				  </ul>
 			   </li>

@@ -126,16 +126,28 @@ class ClustersTool
             //====================================================
             //	validate account name input is correct
             //====================================================             
-             $account_flag = $this->accoountCheck($account_name, $data_correct);
+             $account_flag = $this->accountCheck($account_name, $data_correct);
              $mailing_flag = $this->mailing_listCheck($mailing_list, $data_correct);
              
              if ($cluster_flag && $account_flag && $mailing_flag){ 
-                echo "enter ";
+                //echo "enter ";
              //echo "mailing_list".$mailing_list."data_correct".$data_correct;
              $exist_acc_flag = $this->accountExist($account_name, $data_correct);
              $exist_clu_flag = $this->clusterExist($cluster_name, $data_correct);
              }
-             echo "data_correct- before last:=".$data_correct."=";
+             if ($exist_acc_flag ){
+                    echo '<script language="javascript">';
+                    echo 'alert("account already exist in system")';
+                    echo '</script>';
+                    return;
+             }
+             if ($exist_clu_flag ){
+                    echo '<script language="javascript">';
+                    echo 'alert("cluster already exist in system")';
+                    echo '</script>';
+                    return;
+             }
+             //echo "data_correct- before last:=".$data_correct."=";
             if ($data_correct == 1){
                     $date = date("Y-m-d"); 
                     $columns= __cluster_tl_cluster_name.','.__cluster_tl_account_name.','.__clusters_tl_mailing_list.','.__cluster_tl_date_modified.','.__cluster_tl_date_created;
@@ -172,14 +184,13 @@ class ClustersTool
         //add are you sure you want to remove this cluster?
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data_correct = 1;
-
+            $cluster_name = "";
+            
             //====================================================
             //	validate cluster was chose and not empty
             //====================================================             
-            if (empty($_POST['cluster_name'])) {
-                $data_correct = 0;
-                echo "<script type=\"text/javascript\"> alert(\"cluster to remove wasn't selected\"); </script>";
-            }
+            $legal_cluster = $this->clusterCheck($cluster_name, $data_correct);
+            
            
             //====================================================
             //	if all the input are correct- turn a cluster and all
@@ -208,7 +219,7 @@ class ClustersTool
      
      
     /*
-    * function accoountCheck:
+    * function accountCheck:
     * this function should be static, validate account_name was inserted 
     * with legal value
     * @param: $account_name- given by reference should be update in this function with new legal input
@@ -217,15 +228,13 @@ class ClustersTool
     *    $account_name given by reference with new legal value, $data_correct stay correct
     * else- in case input is not valid, return false update $data_correct with 0 value.
     */    
-    public function accoountCheck(&$account_name, &$data_correct){
+    public function accountCheck(&$account_name, &$data_correct){
         if (empty($_POST["account_name"])) {
         $data_correct = 0;
-        $AccountErr = "account Name is required";
         return false;
         } else {
             $account_name = test_input($_POST["account_name"]);
             if (!preg_match("/^[a-zA-Z0-9][a-zA-Z0-9_\- ]*$/",$account_name)) {
-                $AccountErr = "account name shouldn't contain special characters";
                 $data_correct = 0;
                 return false;
             }
@@ -276,7 +285,7 @@ class ClustersTool
         $result =  mysql_result($is_user_exist, 0) ;
         if (! ($result == 0)){
             $data_correct = 0;
-            echo "<script type=\"text/javascript\"> alert(\"Account already exists in the system\"); </script>'";
+            //echo "<script type=\"text/javascript\"> alert(\"Account already exists in the system\"); </script>'";
             return false;
             }
          return true;
@@ -284,7 +293,7 @@ class ClustersTool
 
      /*
     * function clusterExist:
-    * this function should be static, validate that cluster doesn't already exist in DB
+    * this function should be static, validate that cluster doesn't already exist AS NON EXPIRED in DB
     * @param: $cluster_name- new cluster_name
     * @param: $data_correct - reference to indicator if input stand all the rules it should
     * @returns true in case given $cluster_name already exist in db
@@ -292,21 +301,21 @@ class ClustersTool
     * else-$cluster_name is unique return true $data_correct stay correct.
     */ 
     public function clusterExist($cluster_name, &$data_correct){
-        echo "cluster_name".$cluster_name;
+       // echo "cluster_name".$cluster_name;
         
-        $query = "SELECT count(*) From `".__cluster_table_name."` WHERE ".__cluster_tl_cluster_name." LIKE '$cluster_name'";
-        echo "\n\r\t";
-        echo $query;
+        $query = "SELECT count(*) From `".__cluster_table_name."` WHERE ".__cluster_tl_cluster_name." LIKE '$cluster_name' AND ".__cluster_tl_expired_date." IS NULL";
+        // echo "\n\r\t";
+        // echo $query;
         $is_user_exist = mysql_query($query) or die(mysql_error());
         
         $result =  mysql_result($is_user_exist, 0) ;
         if (! ($result == 0)){
             $data_correct = 0;
-            echo "cluster exist";
-            echo "<script type=\"text/javascript\"> alert(\"cluster already exists in the system\"); </script>'";
+            // echo "cluster exist";
+            // echo "<script type=\"text/javascript\"> alert(\"cluster already exists in the system\"); </script>'";
             return false;
             }
-             echo "cluster correct";
+             // echo "cluster correct";
          return true;
      }
      
@@ -320,19 +329,19 @@ class ClustersTool
     * else-$account_name is unique return true $data_correct stay correct.
     */ 
     public function accountExist($account_name, &$data_correct){
-        echo "account_name".$account_name;
+        //echo "account_name".$account_name;
         $query = "SELECT count(*) From `".__cluster_table_name."` WHERE ".__cluster_tl_account_name." LIKE '$account_name'";
-        echo "\n\r\t";
-        echo $query;
+        //echo "\n\r\t";
+        //echo $query;
         $is_user_exist = mysql_query($query) or die(mysql_error());
         $result =  mysql_result($is_user_exist, 0) ;
         if (! ($result == 0)){
-            echo "account exist";
+          //  echo "account exist";
             $data_correct = 0;
             echo "<script type=\"text/javascript\"> alert(\"account already exists in the system\"); </script>'";
             return false;
             }
-          echo "new account";
+          //echo "new account";
          return true;
      }
      
@@ -355,7 +364,7 @@ class ClustersTool
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data_correct = 1;
             $account_name= $cluster_name = $mailing_list="";
-            $flag1 = $this->accoountCheck($account_name, $data_correct);
+            $flag1 = $this->accountCheck($account_name, $data_correct);
     
         if (false == $flag1){
             return;
@@ -383,51 +392,41 @@ class ClustersTool
     
     public function removeAccountFromCluster()
     {
-    //add are you sure you want to remove this cluster?
+    echo "removeAccountFromCluster";
+        
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data_correct = 1;
-            $account_name= $cluster_name ="";
-            $flag1 = $this->accoountCheck($account_name, $data_correct);
-    
-        if (false == $flag1){
-            return;
-            }
-            $flag2 = $this->clusterCheckForRemove($cluster_name, $data_correct, $account_name);
+            $cluster_name =$account_name = "";
             
-            //todo: check that the accountname doesn't allready exist in database
-            // if (empty($_POST["account_name"])) {
-                // $data_correct = 0;
-                // $AccountErr = "account Name is required";
-            // } else {
-                // $account_name = test_input($_POST["account_name"]);
-                // if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$account_name)) {
-                    // $AccountErr = "account name shouldn't contain special characters";
-                    // $data_correct = 0;
-                // }
-            // }
-            // //echo "$data_correct".$data_correct."\n";
-            if (empty($_POST["cluster_name"])) {
-                $data_correct = 0;
-                $clusterErr = "cluster to remove wasn't selected";
-            } else {
-                $cluster_name = test_input($_POST["cluster_name"]);
-                $query = "SELECT count(*) From `clusters` WHERE account_name LIKE '$account_name' AND cluster_name LIKE '$cluster_name'";
-                $is_user_exist = mysql_query($query) or die(mysql_error());
-                $result =  mysql_result($is_user_exist, 0) ;
-                if (! ($result == 0)){
-                    $data_correct = 0;
-                    echo "Account already exists in this cluster"."\n";
-                    }
-            }
-            //echo"data correct?". $data_correct;
-            if ($data_correct == 1){
-                mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`)
-                VALUES('$cluster_name', '$account_name')") or die(mysql_error());
-                    //echo "add".$account_name."to cluster:".$cluster_name."\n";
+            //====================================================
+            //	validate account was chose and not empty
+            //====================================================             
+             $legal_cluster = $this->clusterCheck($cluster_name, $data_correct);
+             $legal_account = $this->accountCheck($account_name, $data_correct);
+           
+            //====================================================
+            //	if all the input are correct- turn a cluster and all
+            //its related account to expired in db
+            //==================================================== 
+           
+           if ($data_correct == 1){
+                $cluster_name = test_input($_POST['cluster_name']);
+                $date = date("Y-m-d");
+                $removeQuery = "UPDATE ".__cluster_table_name." SET ".__cluster_tl_expired_date ."='$date',".__cluster_tl_date_modified." = '$date' WHERE ".__cluster_tl_cluster_name." LIKE '$cluster_name' AND ".__cluster_tl_account_name." LIKE '$account_name' ";
+                $removeQuery = mysql_query($removeQuery) or die(mysql_error());
                 
-            }
-        }
-     }
-    
+            if (! (mysql_errno())){
+                    echo '<script language="javascript">';
+                    echo 'alert("Removed Account Succeed!")';
+                    echo '</script>';                   
+            } else {
+                    echo '<script language="javascript">';
+                    echo 'alert("Unable to Remove This Account")';
+                    echo '</script>';                
+                    }      //close else case
+            }               //close remove section
+        }                   //close if $_SERVER["REQUEST_METHOD"] section
+     }                      //close function RemoveCluster
+     
 } //closing class 
 

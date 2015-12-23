@@ -13,8 +13,7 @@
     $cluster_name = $account_name = "";				//Ayelt-TODO: is it needed?
     
     if(!empty($_POST['cluster_name']) && !empty($_POST['account_name'])) {
-        echo "hi";
-		include_once "../inc/class.cluster.inc.php";
+        include_once "../inc/class.cluster.inc.php";
 		$cluster_group = new ClustersTool(db);
 		echo $cluster_group->AddNewCluster();
      }
@@ -108,17 +107,19 @@ $(document).ready(function(){
 					</div>
         
 				</form>
-				<div class='col-md-3'>
-				
-					<!--	Cancel		-->
-					<button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel">Cancel</button>
-					<script>
-						 $('#cancelButton').on('click', function (e) {
-							window.location.href ="../cssmenu/mainPage.php";
-							}
-						 )
-					 </script>
-				</div>
+        <div class='col-md-3'>
+            <button class='btn-lg btn-danger' id='cancelButton' style='float:right' name="Cancel" onclick="return confirm_out('Are you sure?')">Cancel</button>
+                <script>
+        
+                 function confirm_out() {
+   
+    if (confirm("are you sure?") == true) {
+        window.location.href ="../cssmenu/mainPage.php";
+     }
+    }
+
+                 </script>
+        </div>  
 			</div>
 		</div>
 	</div>
