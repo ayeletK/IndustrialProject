@@ -72,7 +72,7 @@ $(document).ready(function(){
               <div class='col-md-2'>
                 <div class='form-group internal'>                
                 <?php
-                $query = mysql_query("SELECT DISTINCT cluster_name FROM clusters ORDER BY cluster_name ASC "); // Run your query
+                $query = mysql_query("SELECT DISTINCT ".__cluster_tl_cluster_name." FROM ".__cluster_table_name." ORDER BY ".__cluster_tl_cluster_name." ASC "); // Run your query
 
                 echo '<select class="form-control" name="cluster_name" required>'; // Open your drop down box
 

@@ -112,23 +112,31 @@ class ClustersTool
      */
     public function AddNewCluster()
     {
+    
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data_correct = 1;
-            //echo $data_correct;
+    
+            //====================================================
+            //	validate cluster input is not empty
+            //====================================================             
+            
             if (empty($_POST["cluster_name"])) {
                 $data_correct = 0;
                 //echo "$data_correct".$data_correct;
+                    echo '<script language="javascript">';
+                    echo 'alert("new cluster name wasn\'t insert")';
+                    echo '</script>';
                 $clusterErr = "cluster Name is required";
             } else {
                 $cluster_name = test_input($_POST["cluster_name"]);
-                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$cluster_name)) {
-                    $clusterErr = "account name shouldn't contain special characters";
+                if (!preg_match("/^[a-zA-Z0-9_\-]+$/",$cluster_name)) {
                     $data_correct = 0;
-                    //echo "line 129: $data_correct".$data_correct;
-                }
+                  }
             }//close the else
+            //====================================================
+            //	validate account name input is correct
+            //====================================================             
             
-            //check validation of "name" input
             //todo: check that the accountname doesn't allready exist in database
             if (empty($_POST["account_name"])) {
                 $data_correct = 0;
@@ -140,18 +148,21 @@ class ClustersTool
                     $data_correct = 0;
                 }
             }
+            //====================================================
+            //	if all the input are correct- turn a cluster and all
+            //its related account to expired in db
+            //==================================================== 
+            
             //echo "line 14:$data_correct".$data_correct;
             if ($data_correct == 1){
                 $query = "SELECT count(*) From `clusters` WHERE account_name LIKE '$account_name' OR cluster_name LIKE '$cluster_name'";
                 $is_account_exist = mysql_query($query) or die(mysql_error());
                 $result =  mysql_result($is_account_exist, 0) ;
                 if (! ($result == 0)){
-                    //header('location: ../industrialProject/addnewcluster.php');
                     echo '<script language="javascript">';
                     echo 'alert("Account or cluster already exist in this cluster")';
                     echo '</script>';
-                    //header('location: ../industrialProject/addnewcluster.php');
-
+                    
                     echo "Account or cluster already exist in this cluster";
                 } else {
                     mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`)
