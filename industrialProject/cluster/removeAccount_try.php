@@ -24,7 +24,7 @@ function getAccount(val) {
 	url: "get_account_under_cluster.php",
 	data:'cluster_id='+val,
 	success: function(data){
-		$("#account-list").html(data);
+		$("#tryyyy").html(data);
 	},
 	error: function(data){
 		alert("failed");
@@ -55,7 +55,7 @@ while ($row = mysql_fetch_array($results)) {
 ?>
 </select>
 </div>
-<div class="row">
+<div class="row" id="tryyyy">
 <label>Account:</label><br/>
 <select name="account-list" id="account-list" class="demoInputBox">
 <option value="">Select Account</option>

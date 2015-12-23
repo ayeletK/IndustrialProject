@@ -4,11 +4,8 @@
 	// check user is logged in and is certified to add new user to the system
 	if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']!='OPS'):
 	
-	// define variables and set to empty values
-	$realNameErr = $userNameErr = $passwordErr = $mailErr = $phoneErr = $roleErr = "";
-	
 	// regEx for client side validation check
-	$realNameRegEx = '/^[A-Z][a-zA-Z]*(\s[A-Z][a-zA-Z]*[a-zA-Z]*)+$/';
+	$realNameRegEx = '/^[A-Z][a-zA-Z]*(\s+[A-Z][a-zA-Z]*[a-zA-Z]*)+$/';
 	$userNameRegEx = '/^(?!EXP_)[a-zA-Z0-9_\-][a-zA-Z0-9_\- ]*$/';
 	$amdocsMailRegEx = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@amdocs[\.]com$/';
 	$phoneRegEx = '/^0((([2457]\d)[\-]\d{7})|([23489][\-][2-9]\d{6}))$/';
@@ -70,7 +67,8 @@
 						<label class='control-label col-md-2 col-md-offset-2' for="realName">Real Name:</label>
 						<div class='col-md-2' >
 							<input class="form-control" type="text" name="realName" id="realName" size="25" maxlength="30" 
-								width="7%" onblur="return validate_input(id, <?php echo $realNameRegEx; ?>, 'realNameErr');" required />
+								width="7%" onblur="return validate_input(id, <?php echo $realNameRegEx; ?>, 'realNameErr');" 
+								onfocus="return setColors(id, 'realNameErr');" required />
 						</div>
 						<div class='col-md-2' style="width: auto;" >
 							<img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" 

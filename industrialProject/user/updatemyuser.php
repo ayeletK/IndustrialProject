@@ -1,21 +1,29 @@
 <?php
-    include_once "common/base.php";
-    $pageTitle = "Register";
+    include_once '../common/base.php';
+	$pageTitle = "Update My Info";
 	
-	// define variables and set to empty values
-	$realNameErr = $userNameErr = $mailErr = $phoneErr = $roleErr = "";
-	$oldPasswordErr = $newPasswordErr = $verifyPasswordErr = "";
+	// check user is logged in and is certified to add new account to the system
+	if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1 && $_SESSION['Role']=='SM'):
 	
-	include_once "common/myFiles/header.php";
-	//include_once "scripts/showHide.php";
+	// regEx for client side validation check
+	$realNameRegEx = '/^[A-Z][a-zA-Z]*(\s+[A-Z][a-zA-Z]*[a-zA-Z]*)+$/';
+	$userNameRegEx = '/^(?!EXP_)[a-zA-Z0-9_\-][a-zA-Z0-9_\- ]*$/';
+	$amdocsMailRegEx = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@amdocs[\.]com$/';
+	$phoneRegEx = '/^0((([2457]\d)[\-]\d{7})|([23489][\-][2-9]\d{6}))$/';
 	
-	// collecting userData from table.
-	
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		include_once "inc/class.users.inc.php";
+	if(!empty($_POST['realName']) && !empty($_POST['userName']) && !empty($_POST['password']) && !empty($_POST['mail'])) {
+		include_once "../inc/class.users.inc.php";
 		$users = new ToolUsers(db);
-		echo $users->UpdateUser();
+		$res = $users->CreateUser();
+		echo $res.'<br><br>';
+		if ($res){
+			echo "<script type=\"text/javascript\"> alert(\"User was Updated successfully!\"); </script>";
+?>
+	<meta http-equiv="refresh" content="0;../cssmenu/mainPage.php">
+<?php
+		}
 	}
+?>
 ?>
         <h2 aligment="center">Update User Information</h2>
 		<form class="form-signin" method="post" action="addnewuser.php" id="registerform">

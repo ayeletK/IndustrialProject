@@ -2,14 +2,14 @@
 	include_once '../common/base.php';
 	
 	// if user is logged in
-	if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == 1){
+	if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == 1) {
 		header('Location: ../cssmenu/mainPage.php');
 	}
 	
 	// define variables and set to empty values
 	$userNameErr = $passwordErr = "";
 	
-	if(!empty($_POST['userName']) && !empty($_POST['password'])) {
+	if (!empty($_POST['userName']) && !empty($_POST['password'])) {
  		include_once "../inc/class.users.inc.php";
 		$users = new ToolUsers(db);
 		echo $users->LogInUser();
@@ -40,7 +40,7 @@
 				<span class="error"><?php echo $passwordErr;?></span>
 				<input type="submit" name="login-button" id="login-button" value="Login" />
 			</form>
-			<a id="resetPass" href="resetpassword.php"> Forgot your password? </a>
+			<a id="resetPass" href="forgotpassword.php"> Forgot your password? </a>
 		</div>
 		<ul class="bg-bubbles">
 			<li></li>
