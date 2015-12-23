@@ -6,7 +6,6 @@
      * @return the corrected string 
      */ 
 
-     global $clusterErr, $AccountErr ,$cluster_name ,$account_name;     
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -14,7 +13,7 @@ function test_input($data) {
     return $data;
 }
 /**
- * Handles user interactions within the app
+ * Handles cluster interactions within the app
  *
  *	wanted actions:
  *		Create new Cluster
@@ -53,57 +52,7 @@ class ClustersTool
     }
     
 
-
- 
-	/**
-     * Changes the cluster's name
-     *
-     * @return boolean    TRUE on success and FALSE on failure
-     */
-    public function updateCluster()
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $data_correct = 1;
-            
-            //check validation of "name" input
-            //todo: check that the accountname doesn't allready exist in database
-            if (empty($_POST["account_name"])) {
-                $data_correct = 0;
-                $AccountErr = "account Name is required";
-            } else {
-                $account_name = test_input($_POST["account_name"]);
-                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$account_name)) {
-                    $AccountErr = "account name shouldn't contain special characters";
-                    $data_correct = 0;
-                }
-            }
-            if (empty($_POST["cluster"])) {
-                $data_correct = 0;
-                $clusterErr = "account Name is required";
-            } else {
-                $cluster = test_input($_POST["cluster"]);
-                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$cluster)) {
-                    $clusterErr = "account name shouldn't contain special characters";
-                    $data_correct = 0;
-                }
-            }
-            //echo"data correct?". $data_correct;
-            if ($data_correct == 1){
-                $query = "SELECT count(*) From `clusters` WHERE account_name LIKE '$account_name' AND cluster_name LIKE '$cluster_name'";
-                $is_user_exist = mysql_query($query) or die(mysql_error());
-                $result =  mysql_result($is_user_exist, 0) ;
-                if (! ($result == 0)){
-                    //echo "Account already exist in this cluster";
-                } else {
-                    mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`)
-                        VALUES('$cluster_name', '$account_name')") or die(mysql_error());
-                }
-                
-            }
-        }
-     }
-
-     /**
+    /**
      * insert new cluster into database
      * each new cluster should include at least a new account
      * @return boolean    TRUE on success and FALSE on failure
@@ -120,11 +69,9 @@ class ClustersTool
             if (empty($_POST["cluster_name"])) {
                 $data_correct = 0;
                 echo $clusterErr;
-                $clusterErr = "cluster Name is required";
             } else {
                 $cluster_name = test_input($_POST["cluster_name"]);
                 if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$cluster_name)) {
-                    $clusterErr = "account name shouldn't contain special characters";
                     $data_correct = 0;
                 }
             }//close the else
@@ -135,11 +82,9 @@ class ClustersTool
             //todo: check that the accountname doesn't allready exist in database
             if (empty($_POST["account_name"])) {
                 $data_correct = 0;
-                $AccountErr = "account Name is required";
             } else {
                 $account_name = test_input($_POST["account_name"]);
                 if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$account_name)) {
-                    $AccountErr = "account name shouldn't contain special characters";
                     $data_correct = 0;
                 }
             }
@@ -193,7 +138,6 @@ class ClustersTool
             //====================================================             
             if (empty($_POST['cluster_name'])) {
                 $data_correct = 0;
-                $clusterErr = "cluster to remove wasn't selected";
             }
            
             //====================================================
@@ -239,12 +183,10 @@ class ClustersTool
             //echo "try2".$data_correct;
             if (empty($_POST["account_name"])) {
                 $data_correct = 0;
-                $AccountErr = "account Name is required";
             } else {
                 //echo "try3".$data_correct;
                 $account_name = test_input($_POST["account_name"]);
                 if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$account_name)) {
-                    $AccountErr = "account name shouldn't contain special characters";
                     $data_correct = 0;
                 }
             }
@@ -254,7 +196,6 @@ class ClustersTool
             //====================================================            
             if (empty($_POST["cluster_name"])) {
                 $data_correct = 0;
-                $clusterErr = "cluster to remove wasn't selected";
                 //echo "try5".$data_correct;
             } else {
                 $cluster_name = test_input($_POST["cluster_name"]);
@@ -304,11 +245,9 @@ class ClustersTool
             //====================================================         
             if (empty($_POST["account_name"])) {
                 $data_correct = 0;
-                $AccountErr = "account Name is required";
             } else {
                 $account_name = test_input($_POST[__cluster_tl_account_name]);
                 if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$account_name)) {
-                    $AccountErr = "account name shouldn't contain special characters";
                     $data_correct = 0;
                 }
             }
@@ -318,7 +257,6 @@ class ClustersTool
             //echo "$data_correct".$data_correct."\n";
             if (empty($_POST[__cluster_tl_cluster_name])) {
                 $data_correct = 0;
-                $clusterErr = "cluster to remove wasn't selected";
             } else {
                 $cluster_name = test_input($_POST[__cluster_tl_cluster_name]);
                 $query = "SELECT count(*) From `clusters` WHERE __cluster_tl_account_name LIKE '$account_name' AND __cluster_tl_cluster_name LIKE '$cluster_name'";
@@ -326,7 +264,6 @@ class ClustersTool
                 $result =  mysql_result($is_user_exist, 0) ;
                 if (! ($result == 0)){
                     $data_correct = 0;
-                    echo "Account already exists in this cluster"."\n";
                     }
             }
             

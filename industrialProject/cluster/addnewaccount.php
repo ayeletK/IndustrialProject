@@ -42,8 +42,7 @@
             <div class='col-md-2' >
                 <input class="form-control" type="text" name="account_name" id="account_name" size="25" maxlength="30" width="7%" onblur="return validate_account_name(value);" required />
             </div>
-            <div class='col-md-2' >
-          
+            <div class='col-md-2' >       
             <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
             </div>
 <script>
@@ -93,4 +92,4 @@ $(document).ready(function(){
     </div>
   </div>
 </body>
-<script src="addnewcluster.js"></script>
+<script src="clusters_validation.js"></script>

@@ -6,8 +6,8 @@
         //global $clusterErr, $AccountErr ,$cluster_name ,$account_name;
         $clusterErr = $schedule_id_err = $schedule_name_err = "";
     
-        if(!empty($_POST['schedule_name']) && !empty($_POST['schedule_name']) && !empty($_POST['account']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])) {
-            include_once "../inc/class.schedule.inc.php";
+        if(!empty($_POST['schedule_name']) && !empty($_POST['schedule_name']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])) {
+            include_once "../inc/class.schedules.inc.php";
             $cluster_group = new SchedulesTool(db);
             echo $cluster_group->AddNewSchedule();
 }
@@ -54,20 +54,20 @@ $(document).ready(function(){
                 <div class='form-group'>
                     <label class='control-label col-md-2 col-md-offset-2' for='schedule_name'>Schedule Name:</label>
                     <div class='col-md-2'>
-                        <a href="#" data-placement="right" data-toggle="tooltip" title="Can include only Letters and digits">
                             <input class="form-control" type="text" name="schedule_name" id="schedule_name" size="25" maxlength="30" width="7%" onblur="return validate_schedule_name(value);" required/>
-                        </a>
-                        <span id="schedule_name_err" style="display: none;">you must enter a legal schedule name which doesnt already exist</span>
+                        </div>
+                                <div class='col-md-2' >       
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
+            </div>
                     </div>
-                    <span class="error" id='error1'>*<?php echo $schedule_name_err;?></span>
-                </div>
                 <div class='form-group'>
                     <label class='control-label col-md-2 col-md-offset-2' for='schedule_id:'>Schedule ID:</label>
                     <div class='col-md-2'>
-                        <a href="#" data-placement="right" data-toggle="tooltip" title="Can include only digits">
                             <input class="form-control" type="text" name="schedule_id" id="schedule_id" size="25" maxlength="30" width="7%" onblur="return validate_schedule_id(value);" required/>
-                        </a>
-                    </div>
+                        </div>
+            <div class='col-md-2' >       
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="Can include only Letters or digits">        
+            </div>                
                 </div>
                 <div class='form-group'>
                     <label class='control-label col-md-2 col-md-offset-2' for='id_start_date'>Start date</label>
@@ -97,15 +97,16 @@ $(document).ready(function(){
                 <div class='form-group'>
                     <label class='control-label col-md-2 col-md-offset-2' for="account">manager: (optional) </label>
                     <div class='col-md-2' >
-                        <a href="#" data-placement="right" data-toggle="tooltip" title="the schedule belongs only to a specific user with his own tasks">
-
                             <?php
             include_once '../helpers/getDropDownListFromTableData.php';
             $pred = " WHERE ".__users_tl_role." in ('AM', 'SM') ";
             echo dataDropdown('users',__users_tl_user_name, $pred);
 			?>
-                        </a>
+
                     </div>
+                                <div class='col-md-2' >       
+            <img src="../common/question_mark.jpg" alt="?" height="20" width="20" data-placement="right" data-toggle="tooltip" title="the schedule belongs only to a specific user with his own tasks">        
+            </div>
                 </div>
                 <div class='form-group'>
                     <button class='btn-lg btn-primary' type="submit" name="new_schedule" id="new_schedule">Add new Schedule</button>

@@ -79,4 +79,4 @@ $(document).ready(function(){
     </div>
   </div>
 </body>
-<script src="addnewcluster.js"></script>
+<script src="clusters_validation.js"></script>

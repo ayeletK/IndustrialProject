@@ -24,15 +24,15 @@
 	
 	
 	// Schedule table fields credentials
-	define("__clusters_tl_schedule_name", "schedule_name");
-	define("__clusters_tl_schedule_id", "schedule_id");
-	define("__clusters_tl_start_date", "start_date");
-	define("__clusters_tl_start_time", "start_time");
-	define("__clusters_tl_end_date", "end_date");
-	define("__clusters_tl_end_time", "end_time");
-	define("__clusters_tl_account_id", "account_id");
-	define("__clusters_tl_manager", "manager");
-	define("__clusters_tl_expired", "expired");
+	define("__schedules_tl_schedule_name", "schedule_name");
+	define("__schedules_tl_schedule_id", "schedule_id");
+	define("__schedules_tl_start_date", "start_date");
+	define("__schedules_tl_start_time", "start_time");
+	define("__schedules_tl_end_date", "end_date");
+	define("__schedules_tl_end_time", "end_time");
+	define("__schedules_tl_account_id", "account_id");
+	define("__schedules_tl_manager", "manager");
+	define("__schedules_tl_expired", "expired");
 	
 	// Tasks table fields credentials
 	

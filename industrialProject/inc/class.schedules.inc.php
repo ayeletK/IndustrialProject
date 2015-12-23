@@ -12,14 +12,10 @@ function test_input($data) {
     return $data;
 }
 /**
- * Handles user interactions within the app
+ * Handles schedule instructions:
  *
- *	wanted actions:
- *		Create new Cluster
- *		add new Account to existing cluster
- *      remove existing cluster
- *		remove existing account from cluster
- *
+ *		Create new Schedule
+ *		
  */
 class SchedulesTool
 {
@@ -36,6 +32,7 @@ class SchedulesTool
      * @param object $db
      * @return void
      */
+  
     public function __construct($db=NULL)
     {
         if($db != NULL)
@@ -44,49 +41,92 @@ class SchedulesTool
         }
         else
         {
-			include_once 'inc/constants.inc.php';
-            $connection = mysql_connect($dbhost, $dbuser, $dbpass) ;
-			mysql_select_db($db);
+			include_once '../inc/constants.inc.php';
+            $connection = mysql_connect(dbhost, dbuser, dbpass) ;
+			mysql_select_db(db);
         }
     }
-    
+   
+   
     /**
      * insert new schedule into database
      * each new cluster should include at least a new account
-     * @return boolean    TRUE on success and FALSE on failure
+     * important assumption: account can be empty in case that the schedule 
+     * is private for a user (this option exists only for am,sm)
      */
     public function AddNewSchedule()
     {
+        echo "59\n";
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data_correct = 1;
             
+        echo "63\n";
+        
             //====================================================
-            //	check validation of "cluster_name" input
+            //	check validation of "schedule_name" input
             //====================================================
             if (empty($_POST["schedule_name"])) {
                 $data_correct = 0;
-                $cschedule_name_Err = "cluster Name is required";
+                
+        echo "71\n";
+        
             } else {
-                $cluster_name = test_input($_POST["cluster_name"]);
-                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$cluster_name)) {
-                    $clusterErr = "account name shouldn't contain special characters";
+                $schedule_name = test_input($_POST["schedule_name"]);
+                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$schedule_name)) {
+
+        echo "77\n";
+                        
+                $data_correct = 0;
+                }
+            }//close the else
+
+            //====================================================
+            //	check validation of "schedule_id" input
+            //====================================================
+            if (empty($_POST["schedule_id"])) {
+            
+        echo "88\n";
+        
+                $data_correct = 0;
+            } else {
+                $schedule_id = test_input($_POST["schedule_id"]);
+                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$schedule_id)) {
                     $data_correct = 0;
                 }
             }//close the else
             
             //====================================================
-            //	check validation of "account_name" input
-            //====================================================            
-            //todo: check that the accountname doesn't allready exist in database
-            if (empty($_POST["account_name"])) {
+            //	check validation of "start date and end date" input
+            //====================================================
+            if (empty($_POST["start_date"]) || empty($_POST["end_date"])) {
                 $data_correct = 0;
-                $AccountErr = "account Name is required";
+                
+                echo "104\n";
+                echo "$_POST[start_date]:".$_POST["start_date"];
+                echo "$_POST[end_date]:".$_POST["end_date"];
+                echo "bigger:".($_POST["start_date"]>$_POST["end_date"]
+                
             } else {
-                $account_name = test_input($_POST["account_name"]);
-                if (!preg_match("/^[a-zA-Z0-9_\- ]*$/",$account_name)) {
-                    $AccountErr = "account name shouldn't contain special characters";
+                if ($_POST["start_date"] > $_POST["end_date"]){
                     $data_correct = 0;
                 }
+                $start_date = test_input($_POST["start_date"]);
+                $end_date = test_input($_POST["end_date"]);
+                
+            }//close the else
+                        
+            //====================================================
+            //	check validation that at least one of "account_name" or manager are given 
+            //====================================================            
+            
+            //todo: check that the accountname doesn't allready exist in database
+            if ((empty($_POST["account_name"]) && empty($_POST["manager"]))||
+(!empty($_POST["account_name"]) && !empty($_POST["manager"]))) {
+                $data_correct = 0;
+            }
+            else {
+                $account_name = $_POST["account_name"];
+                $manager = $_POST["manager"];         
             }
             
             //====================================================
@@ -94,20 +134,19 @@ class SchedulesTool
             //  insert new cluster with account to dbt_name" input
             //====================================================             
             if ($data_correct == 1){
-                $query = "SELECT count(*) From `clusters` WHERE account_name LIKE '$account_name' OR cluster_name LIKE '$cluster_name'";
+                $query = "SELECT count(*) From `schedules` WHERE ".__schedules_tl_schedule_name." LIKE '$schedule_name' OR "__schedules_tl_schedule_id." LIKE '$schedule_id'";
                 $is_account_exist = mysql_query($query) or die(mysql_error());
                 $result =  mysql_result($is_account_exist, 0) ;
                 if (! ($result == 0)){
                     //header('location: ../industrialProject/addnewcluster.php');
                     echo '<script language="javascript">';
-                    echo 'alert("Account or cluster already exist in this cluster")';
+                    echo 'alert("schedule name or id already exist")';
                     echo '</script>';
                     //header('location: ../industrialProject/addnewcluster.php');
 
-                    //echo "Account or cluster already exist in this cluster";
                 } else {
-                    mysql_query("INSERT INTO clusters (`cluster_name`, `account_name`)
-                        VALUES('$cluster_name', '$account_name')") or die(mysql_error());
+                $column=__schedules_tl_schedule_name.','.__schedules_tl_schedule_id.','.__schedules_tl_start_date.','.__schedules_tl_end_date.','.__schedules_tl_account_id.','.__schedules_tl_manager;
+                    mysql_query("INSERT INTO schedules ($column) VALUES('$schedule_name', '$schedule_id','$start_date', '$end_date','$account_name', '$manager')") or die(mysql_error());
                     echo '<script language="javascript">';
                     echo 'alert("cluster added successfully")';
                     echo '</script>';

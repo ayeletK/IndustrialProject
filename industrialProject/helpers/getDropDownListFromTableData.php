@@ -8,7 +8,7 @@
 
 		$lower_column_name=strtolower($column_name);
 		$selectDropdown = "<select name=\"$lower_column_name\">";
-		$query = "SELECT DISTINCT $column_name FROM `$table_name`".$pred;// WHERE Expired IS NULL";
+		$query = "SELECT $column_name FROM `$table_name`".$pred;// WHERE Expired IS NULL";
 		//echo $query;
 		$result = mysql_query($query) or die (mysql_error());
 
