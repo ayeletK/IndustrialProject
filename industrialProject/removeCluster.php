@@ -47,7 +47,7 @@
               <div class='col-md-2'>
                 <div class='form-group internal'>                
                 <?php
-                $query = mysql_query("SELECT DISTINCT cluster_name FROM `clusters`"); // Run your query
+                $query = mysql_query("SELECT DISTINCT cluster_name FROM `clusters` WHERE Expired IS NULL"); // Run your query
 
                 echo '<select class="form-control" name="cluster_name">'; // Open your drop down box
 
